@@ -11,6 +11,13 @@
 // Windows 头文件: 
 #include <windows.h>
 
-
-
 // TODO:  在此处引用程序需要的其他头文件
+#include <memory>
+#include <map>
+#include <vector>
+
+#include <opencv2/core/mat.hpp>
+#ifdef Controler_h__
+#include <opencv.hpp>
+#endif // Controler
+

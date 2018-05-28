@@ -15,6 +15,9 @@
  * ================================================================================*/
 #include "stdafx.h"
 
+class Interface_Alg;
+class Interface_GUI;
+
 /*接口纯虚类
 	GUI向后台算法通信
 	算法继承并公有实现该接口，GUI实现相应的指针并调用方法。控制流单向，GUI->ALG
@@ -25,14 +28,14 @@
 class Interface_Alg
 {
 public:
-	virtual bool Init() = 0;//初始化算法
+	virtual bool Init(Interface_GUI*gui) = 0;//初始化算法
 	virtual bool Release() = 0;//释放资源
-	
-	virtual bool LoadSrcImg() = 0;//载入源图片
+
+	virtual bool LoadSrc(cv::InputArray src) = 0;//载入源图片
 	virtual bool LoadSetting() = 0;//载入设定
 	virtual bool LoadParam() = 0;//载入参数
 
-	virtual bool ReadRstImg() = 0;//读取结果
+	virtual bool ReadRst(cv::OutputArray rst) = 0;//读取结果
 	virtual bool ReadParam() = 0;//读取参数
 	virtual bool ReadState() = 0;//读取当前状态
 
@@ -43,7 +46,7 @@ public:
 	virtual bool Terminate() = 0;//立即停止（无论是否正在工作）
 
 	virtual bool Train() = 0;//训练
-	
+
 	virtual bool IsInit() = 0;//检查是否初始化完成
 	virtual bool IsBusy() = 0;//检查是否忙
 };
@@ -55,7 +58,8 @@ public:
 */
 class Interface_GUI
 {
-	virtual bool ShowImg()=0;//显示图片
-	virtual bool TextOut()=0;//输出文字
-	virtual bool ReportProgress() = 0;//报告进度
+public:
+	virtual bool ShowImg(cv::InputArray img) = 0;//显示图片
+	virtual bool TextOut(std::string text) = 0;//输出文字
+	virtual bool ReportProgress(int progress) = 0;//报告进度
 };
