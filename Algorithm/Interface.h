@@ -14,9 +14,12 @@
  * \note
  * ================================================================================*/
 #include "stdafx.h"
+#include <opencv2/core/mat.hpp>
+#include <string>
+#include "dllmain.h"
 
-class Interface_Alg;
-class Interface_GUI;
+class ALGORITHM_API Interface_Alg;
+class ALGORITHM_API Interface_GUI;
 
 /*接口纯虚类
 	GUI向后台算法通信
@@ -28,7 +31,7 @@ class Interface_GUI;
 class Interface_Alg
 {
 public:
-	virtual bool Init(Interface_GUI*gui) = 0;//初始化算法
+	virtual bool Init(const Interface_GUI*gui) = 0;//初始化算法
 	virtual bool Release() = 0;//释放资源
 
 	virtual bool LoadSrc(cv::InputArray src) = 0;//载入源图片
@@ -47,10 +50,10 @@ public:
 
 	virtual bool Train() = 0;//训练
 
-	virtual bool IsInit() = 0;//检查是否初始化完成
-	virtual bool IsBusy() = 0;//检查是否忙
+	virtual bool IsInit() const = 0;//检查是否初始化完成
+	virtual bool IsBusy() const = 0;//检查是否忙
 };
-
+ALGORITHM_API Interface_Alg*Create_Interface_Alg(const Interface_GUI*gui);
 
 /*接口纯虚类
 	后台算法向GUI通信
@@ -59,7 +62,12 @@ public:
 class Interface_GUI
 {
 public:
-	virtual bool ShowImg(cv::InputArray img) = 0;//显示图片
+	virtual bool ShowImg(const cv::InputArray img) = 0;//显示图片
 	virtual bool TextOut(std::string text) = 0;//输出文字
 	virtual bool ReportProgress(int progress) = 0;//报告进度
+	virtual bool ReportError(std::string msg) = 0;//报告错误
+	virtual bool SaveData(const cv::InputArray data) = 0;//保存数据
+
+	virtual bool IsInit() const = 0;
+	virtual bool IsBusy() const = 0;
 };

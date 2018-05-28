@@ -24,13 +24,13 @@
     <ClInclude Include="targetver.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Algorithm.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="Interface.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Controler.h">
+    <ClInclude Include="AlgorithmControler.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="dllmain.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -38,13 +38,10 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Algorithm.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="dllmain.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Controler.cpp">
+    <ClCompile Include="AlgorithmControler.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
