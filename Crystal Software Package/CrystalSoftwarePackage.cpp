@@ -49,7 +49,9 @@ void CrystalSoftwarePackage::RunAlg()
 	//ui.pushButton_run->setText("暂停");
 	//disconnect(ui.pushButton_run, &QPushButton::clicked, this, &CrystalSoftwarePackage::RunAlg);
 	try {
+		qDebug() << "start...";
 		alg->Run();
+		qDebug() << "over...";
 	}
 	catch (std::system_error e)
 	{

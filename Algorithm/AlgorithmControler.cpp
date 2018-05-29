@@ -89,7 +89,7 @@ bool AlgorithmControler::ReadState()const
 	throw std::logic_error("The method or operation is not implemented.");
 }
 
-
+//#include <windows.h>
 bool AlgorithmControler::Run()
 {
 	TRYRUN;
@@ -102,6 +102,7 @@ bool AlgorithmControler::Run()
 		_gui->ShowText(str);
 		_gui->ShowImg(tmp);
 		_gui->wait(40);
+		//Sleep(40);
 		tmp *= 1.02;
 	}
 	return true;
