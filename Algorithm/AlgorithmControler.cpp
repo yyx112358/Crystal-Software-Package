@@ -9,6 +9,9 @@
 using namespace std;
 using namespace cv;
 
+std::mutex _write_mutex, _run_mutex, _init_mutex;
+#define TRYRUN AlgLock_t lockrun(_run_mutex);
+#define TRYWRITE AlgLock_t lockwrite(_write_mutex);
 
 Interface_Alg* Create_Interface_Alg(const Interface_GUI*gui)
 {
@@ -17,41 +20,61 @@ Interface_Alg* Create_Interface_Alg(const Interface_GUI*gui)
 
 bool AlgorithmControler::Init(const Interface_GUI*gui)
 {
-	CV_Assert(gui->IsInit() == true);
+	if (IsInit() == true)
+		Release();
+	
 	_gui = const_cast<Interface_GUI*>(gui);
+	_gui->ShowText("====Algorithum Init [OK]====");
+	//_init_mutex.lock();
+	_is_init = true;
 	return true;
 }
 
 bool AlgorithmControler::Release()
 {
+	TRYRUN;
+	TRYWRITE;
+	_is_init = false;
 	_gui = nullptr;
+	//_init_mutex.unlock();
+	return true;
+}
+bool AlgorithmControler::LoadSrc(cv::InputArray src)
+{
+	TRYRUN;
+	TRYWRITE;
+	_srcimg = src.getMat().clone();
+	_gui->ShowText("OK");
+
 	return true;
 }
 
-bool AlgorithmControler::LoadSrc(cv::InputArray src)
+bool AlgorithmControler::LoadSrc_Async(cv::InputArray src)
 {
-	_srcimg = src.getMat();
-	_gui->ShowText("OK");
-
-	for(auto i=0;i<50;i++)
-	{
-		_gui->ShowImg(_srcimg);
-		_srcimg += 1;
-	}
-	return true;
+	throw std::logic_error("The method or operation is not implemented.");
 }
 
 bool AlgorithmControler::LoadSetting()
 {
 	throw std::logic_error("The method or operation is not implemented.");
 }
-
+bool AlgorithmControler::LoadSetting_Async()
+{
+	throw std::logic_error("The method or operation is not implemented.");
+}
 bool AlgorithmControler::LoadParam()
 {
 	throw std::logic_error("The method or operation is not implemented.");
 }
-
+bool AlgorithmControler::LoadParam_Async()
+{
+	throw std::logic_error("The method or operation is not implemented.");
+}
 bool AlgorithmControler::ReadRst(cv::OutputArray rst)
+{
+	throw std::logic_error("The method or operation is not implemented.");
+}
+bool AlgorithmControler::ReadRst_Async(cv::OutputArray rst)
 {
 	throw std::logic_error("The method or operation is not implemented.");
 }
@@ -61,14 +84,27 @@ bool AlgorithmControler::ReadParam()
 	throw std::logic_error("The method or operation is not implemented.");
 }
 
-bool AlgorithmControler::ReadState()
+bool AlgorithmControler::ReadState()const
 {
 	throw std::logic_error("The method or operation is not implemented.");
 }
 
+
 bool AlgorithmControler::Run()
 {
-	throw std::logic_error("The method or operation is not implemented.");
+	TRYRUN;
+		
+	Mat tmp = _srcimg.clone();
+	for (auto i = 0; i < 50; i++)
+	{
+		char str[20];
+		sprintf_s<sizeof(str)>(str, "%d", i);
+		_gui->ShowText(str);
+		_gui->ShowImg(tmp);
+		_gui->wait(40);
+		tmp *= 1.02;
+	}
+	return true;
 }
 
 bool AlgorithmControler::RunOnce()
@@ -80,7 +116,10 @@ bool AlgorithmControler::Pause()
 {
 	throw std::logic_error("The method or operation is not implemented.");
 }
-
+bool AlgorithmControler::Resume()
+{
+	throw std::logic_error("The method or operation is not implemented.");
+}
 bool AlgorithmControler::Stop()
 {
 	throw std::logic_error("The method or operation is not implemented.");
@@ -98,10 +137,26 @@ bool AlgorithmControler::Train()
 
 bool AlgorithmControler::IsInit()const
 {
-	throw std::logic_error("The method or operation is not implemented.");
+	return _is_init;
 }
 
-bool AlgorithmControler::IsBusy()const
+bool AlgorithmControler::IsRun()const
 {
-	throw std::logic_error("The method or operation is not implemented.");
+	try
+	{
+		TRYRUN;
+		return false;
+	}
+	catch (std::system_error e)
+	{
+		_gui->ShowText(e.what());
+		return true;
+	}
 }
+
+
+
+
+
+
+

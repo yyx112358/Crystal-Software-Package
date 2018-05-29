@@ -21,7 +21,9 @@ public:
 	virtual bool IsInit() const override;
 	virtual bool IsBusy() const override;
 
-	signals:
+	virtual bool wait(int msec=0) const override;
+
+signals:
 	void sig_ShowImg(QPixmap img);
 	void sig_ShowText(QString str);
 	void sig_ReportProgress();
@@ -30,7 +32,11 @@ public:
 
 public slots:
 	void LoadFiles();
+	void RunAlg();
+	void PauseAlg(bool ispause);
 private:
 	Ui::CrystalSoftwarePackageClass ui;
 	Interface_Alg*alg = nullptr;
+
+
 };

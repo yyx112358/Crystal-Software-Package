@@ -27,6 +27,7 @@ class ALGORITHM_API Interface_GUI;
 	举例:
 		class Alg_withinterface:public Interface_Alg,protected Algorithm{}
 		class GUI:{Interface_Alg*palg=new Alg_withinterface;}
+	带有后缀_Async的代表异步函数，不需要等待相关操作（如写入未完成、上一个被调用函数未结束、正在运行等）结束后就能使用
 */
 class Interface_Alg
 {
@@ -35,23 +36,28 @@ public:
 	virtual bool Release() = 0;//释放资源 
 
 	virtual bool LoadSrc(cv::InputArray src) = 0;//载入源图片
+	virtual bool LoadSrc_Async(cv::InputArray src) = 0;//异步载入源图片
 	virtual bool LoadSetting() = 0;//载入设定
+	virtual bool LoadSetting_Async() = 0;//载入设定
 	virtual bool LoadParam() = 0;//载入参数
+	virtual bool LoadParam_Async() = 0;//载入参数
 
 	virtual bool ReadRst(cv::OutputArray rst) = 0;//读取结果
+	virtual bool ReadRst_Async(cv::OutputArray rst) = 0;//读取结果
 	virtual bool ReadParam() = 0;//读取参数
-	virtual bool ReadState() = 0;//读取当前状态
+	virtual bool ReadState()const = 0;//读取当前状态
 
 	virtual bool Run() = 0;//运行（连续）
 	virtual bool RunOnce() = 0;//运行（单次）
 	virtual bool Pause() = 0;//暂停
+	virtual bool Resume() = 0;//恢复
 	virtual bool Stop() = 0;//停止（完成当前迭代之后）
 	virtual bool Terminate() = 0;//立即停止（无论是否正在工作）
 
 	virtual bool Train() = 0;//训练
 
 	virtual bool IsInit() const = 0;//检查是否初始化完成
-	virtual bool IsBusy() const = 0;//检查是否忙
+	virtual bool IsRun() const = 0;//检查是否忙
 };
 ALGORITHM_API Interface_Alg*Create_Interface_Alg(const Interface_GUI*gui);
 
@@ -70,5 +76,5 @@ public:
 
 	virtual bool IsInit() const = 0;
 	virtual bool IsBusy() const = 0;
-	virtual bool wait()const = 0;
+	virtual bool wait(int msec=0)const = 0;
 };

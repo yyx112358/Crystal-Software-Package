@@ -19,6 +19,7 @@
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QStatusBar>
+#include <QtWidgets/QTextBrowser>
 #include <QtWidgets/QToolBar>
 #include <QtWidgets/QWidget>
 
@@ -30,6 +31,8 @@ public:
     QWidget *centralWidget;
     QPushButton *pushButton_run;
     QLabel *label;
+    QTextBrowser *textBrowser;
+    QPushButton *pushButton_load;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -38,19 +41,25 @@ public:
     {
         if (CrystalSoftwarePackageClass->objectName().isEmpty())
             CrystalSoftwarePackageClass->setObjectName(QStringLiteral("CrystalSoftwarePackageClass"));
-        CrystalSoftwarePackageClass->resize(600, 400);
+        CrystalSoftwarePackageClass->resize(850, 620);
         centralWidget = new QWidget(CrystalSoftwarePackageClass);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         pushButton_run = new QPushButton(centralWidget);
         pushButton_run->setObjectName(QStringLiteral("pushButton_run"));
-        pushButton_run->setGeometry(QRect(20, 80, 75, 23));
+        pushButton_run->setGeometry(QRect(10, 70, 91, 31));
         label = new QLabel(centralWidget);
         label->setObjectName(QStringLiteral("label"));
-        label->setGeometry(QRect(170, 40, 391, 251));
+        label->setGeometry(QRect(200, 10, 641, 531));
+        textBrowser = new QTextBrowser(centralWidget);
+        textBrowser->setObjectName(QStringLiteral("textBrowser"));
+        textBrowser->setGeometry(QRect(0, 130, 191, 361));
+        pushButton_load = new QPushButton(centralWidget);
+        pushButton_load->setObjectName(QStringLiteral("pushButton_load"));
+        pushButton_load->setGeometry(QRect(10, 30, 93, 28));
         CrystalSoftwarePackageClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(CrystalSoftwarePackageClass);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 600, 23));
+        menuBar->setGeometry(QRect(0, 0, 850, 26));
         CrystalSoftwarePackageClass->setMenuBar(menuBar);
         mainToolBar = new QToolBar(CrystalSoftwarePackageClass);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
@@ -69,6 +78,7 @@ public:
         CrystalSoftwarePackageClass->setWindowTitle(QApplication::translate("CrystalSoftwarePackageClass", "CrystalSoftwarePackage", Q_NULLPTR));
         pushButton_run->setText(QApplication::translate("CrystalSoftwarePackageClass", "\350\277\220\350\241\214", Q_NULLPTR));
         label->setText(QApplication::translate("CrystalSoftwarePackageClass", "TextLabel", Q_NULLPTR));
+        pushButton_load->setText(QApplication::translate("CrystalSoftwarePackageClass", "\350\275\275\345\205\245", Q_NULLPTR));
     } // retranslateUi
 
 };
