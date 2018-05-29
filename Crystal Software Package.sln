@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Crystal Software Package", "Crystal Software Package\Crystal Software Package.vcxproj", "{B12702AD-ABFB-343A-A199-8E24837244A3}"
+	ProjectSection(ProjectDependencies) = postProject
+		{2DB340E0-CEE7-4416-BCB9-35E444E2EB79} = {2DB340E0-CEE7-4416-BCB9-35E444E2EB79}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Algorithm", "Algorithm\Algorithm.vcxproj", "{2DB340E0-CEE7-4416-BCB9-35E444E2EB79}"
 EndProject

@@ -4,6 +4,7 @@
 
 #include "AlgorithmControler.h"
 #include <opencv.hpp>
+#include <iostream>
 
 using namespace std;
 using namespace cv;
@@ -30,7 +31,13 @@ bool AlgorithmControler::Release()
 bool AlgorithmControler::LoadSrc(cv::InputArray src)
 {
 	_srcimg = src.getMat();
-	_gui->TextOut("OK");
+	_gui->ShowText("OK");
+
+	for(auto i=0;i<50;i++)
+	{
+		_gui->ShowImg(_srcimg);
+		_srcimg += 1;
+	}
 	return true;
 }
 

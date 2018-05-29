@@ -32,7 +32,7 @@ class Interface_Alg
 {
 public:
 	virtual bool Init(const Interface_GUI*gui) = 0;//初始化算法
-	virtual bool Release() = 0;//释放资源
+	virtual bool Release() = 0;//释放资源 
 
 	virtual bool LoadSrc(cv::InputArray src) = 0;//载入源图片
 	virtual bool LoadSetting() = 0;//载入设定
@@ -63,11 +63,12 @@ class Interface_GUI
 {
 public:
 	virtual bool ShowImg(const cv::InputArray img) = 0;//显示图片
-	virtual bool TextOut(std::string text) = 0;//输出文字
+	virtual bool ShowText(std::string text) = 0;//输出文字
 	virtual bool ReportProgress(int progress) = 0;//报告进度
 	virtual bool ReportError(std::string msg) = 0;//报告错误
 	virtual bool SaveData(const cv::InputArray data) = 0;//保存数据
 
 	virtual bool IsInit() const = 0;
 	virtual bool IsBusy() const = 0;
+	virtual bool wait()const = 0;
 };

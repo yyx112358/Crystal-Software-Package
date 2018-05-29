@@ -1,4 +1,3 @@
-
 #ifdef _CRYSTAL_SOFTWARE_PACKAGE_STDAFX_CPP
 #include <QtWidgets>
 #include <opencv2/core/mat.hpp>
