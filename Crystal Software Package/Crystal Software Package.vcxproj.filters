@@ -8,7 +8,7 @@
     <ClCompile Include="CrystalSoftwarePackage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AlgorithmControler_Thread.cpp">
+    <ClCompile Include="Warper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -46,7 +46,7 @@
     <QtMoc Include="CrystalSoftwarePackage.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="AlgorithmControler_Thread.h">
+    <QtMoc Include="Warper.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

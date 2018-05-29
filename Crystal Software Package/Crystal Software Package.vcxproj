@@ -123,7 +123,7 @@
     </QtRcc>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AlgorithmControler_Thread.cpp" />
+    <ClCompile Include="Warper.cpp" />
     <ClCompile Include="CrystalSoftwarePackage.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -133,7 +133,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Algorithm\Interface.h" />
-    <QtMoc Include="AlgorithmControler_Thread.h" />
+    <QtMoc Include="Warper.h" />
     <ClInclude Include="stdafx.h" />
     <QtMoc Include="CrystalSoftwarePackage.h" />
   </ItemGroup>

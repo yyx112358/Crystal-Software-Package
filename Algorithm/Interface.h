@@ -33,18 +33,15 @@ class Interface_Alg
 {
 public:
 	virtual bool Init(const Interface_GUI*gui) = 0;//初始化算法
+	virtual bool Reset() = 0;//重置为初始状态
 	virtual bool Release() = 0;//释放资源 
 
 	virtual bool LoadSrc(cv::InputArray src) = 0;//载入源图片
-	virtual bool LoadSrc_Async(cv::InputArray src) = 0;//异步载入源图片
 	virtual bool LoadSetting() = 0;//载入设定
-	virtual bool LoadSetting_Async() = 0;//载入设定
 	virtual bool LoadParam() = 0;//载入参数
-	virtual bool LoadParam_Async() = 0;//载入参数
 
 	virtual bool ReadRst(cv::OutputArray rst) = 0;//读取结果
-	virtual bool ReadRst_Async(cv::OutputArray rst) = 0;//读取结果
-	virtual bool ReadParam() = 0;//读取参数
+	virtual bool ReadParam()const = 0;//读取参数
 	virtual bool ReadState()const = 0;//读取当前状态
 
 	virtual bool Run() = 0;//运行（连续）
@@ -52,12 +49,9 @@ public:
 	virtual bool Pause() = 0;//暂停
 	virtual bool Resume() = 0;//恢复
 	virtual bool Stop() = 0;//停止（完成当前迭代之后）
-	virtual bool Terminate() = 0;//立即停止（无论是否正在工作）
-
-	virtual bool Train() = 0;//训练
 
 	virtual bool IsInit() const = 0;//检查是否初始化完成
-	virtual bool IsRun() const = 0;//检查是否忙
+	virtual bool IsRun() = 0;//检查是否忙
 };
 ALGORITHM_API Interface_Alg*Create_Interface_Alg(const Interface_GUI*gui);
 
@@ -74,7 +68,7 @@ public:
 	virtual bool ReportError(std::string msg) = 0;//报告错误
 	virtual bool SaveData(const cv::InputArray data) = 0;//保存数据
 
-	virtual bool IsInit() const = 0;
+	//virtual bool IsInit() const = 0;
 	virtual bool IsBusy() const = 0;
-	virtual bool wait(int msec=0)const = 0;
+	virtual bool wait(int msec=0)const = 0;//等待。QT实现的等待函数能在调用wait()等待时继续进行界面重绘和操作
 };
