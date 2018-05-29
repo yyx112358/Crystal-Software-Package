@@ -33,6 +33,7 @@ public:
     QLabel *label;
     QTextBrowser *textBrowser;
     QPushButton *pushButton_load;
+    QPushButton *pushButton_pause;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -52,10 +53,13 @@ public:
         label->setGeometry(QRect(200, 10, 641, 531));
         textBrowser = new QTextBrowser(centralWidget);
         textBrowser->setObjectName(QStringLiteral("textBrowser"));
-        textBrowser->setGeometry(QRect(0, 130, 191, 361));
+        textBrowser->setGeometry(QRect(0, 180, 191, 361));
         pushButton_load = new QPushButton(centralWidget);
         pushButton_load->setObjectName(QStringLiteral("pushButton_load"));
         pushButton_load->setGeometry(QRect(10, 30, 93, 28));
+        pushButton_pause = new QPushButton(centralWidget);
+        pushButton_pause->setObjectName(QStringLiteral("pushButton_pause"));
+        pushButton_pause->setGeometry(QRect(10, 120, 93, 28));
         CrystalSoftwarePackageClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(CrystalSoftwarePackageClass);
         menuBar->setObjectName(QStringLiteral("menuBar"));
@@ -79,6 +83,7 @@ public:
         pushButton_run->setText(QApplication::translate("CrystalSoftwarePackageClass", "\350\277\220\350\241\214", Q_NULLPTR));
         label->setText(QApplication::translate("CrystalSoftwarePackageClass", "TextLabel", Q_NULLPTR));
         pushButton_load->setText(QApplication::translate("CrystalSoftwarePackageClass", "\350\275\275\345\205\245", Q_NULLPTR));
+        pushButton_pause->setText(QApplication::translate("CrystalSoftwarePackageClass", "\346\232\202\345\201\234", Q_NULLPTR));
     } // retranslateUi
 
 };

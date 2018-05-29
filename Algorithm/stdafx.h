@@ -18,6 +18,7 @@
 #include <map>
 #include <vector>
 #include <string>
+#include <mutex>
 
 #include <opencv2/core/mat.hpp>
 #include <opencv.hpp>

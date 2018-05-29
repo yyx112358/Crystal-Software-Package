@@ -9,10 +9,6 @@
 using namespace std;
 using namespace cv;
 
-std::mutex _write_mutex, _run_mutex, _init_mutex;
-#define TRYRUN AlgLock_t lockrun(_run_mutex);
-#define TRYWRITE AlgLock_t lockwrite(_write_mutex);
-
 Interface_Alg* Create_Interface_Alg(const Interface_GUI*gui)
 {
 	return new AlgorithmControler(gui);
@@ -22,11 +18,28 @@ bool AlgorithmControler::Init(const Interface_GUI*gui)
 {
 	if (IsInit() == true)
 		Release();
-	
 	_gui = const_cast<Interface_GUI*>(gui);
-	_gui->ShowText("====Algorithum Init [OK]====");
-	//_init_mutex.lock();
+
+	//Reset();
+	TRYRUN;
+	TRYWRITE;
+	_is_pause = false;
+	_is_stop = false;
+	_srcimg.release();
+	_dstimg.release();
 	_is_init = true;
+	_gui->ShowText("====Algorithum Init [OK]====");
+	return true;
+}
+
+bool AlgorithmControler::Reset()
+{
+// 	TRYRUN;
+// 	TRYWRITE;
+// 	_is_pause = false;
+// 	_is_stop = false;
+// 	_srcimg.release();
+// 	_dstimg.release();
 	return true;
 }
 
@@ -35,6 +48,7 @@ bool AlgorithmControler::Release()
 	TRYRUN;
 	TRYWRITE;
 	_is_init = false;
+	Reset();
 	_gui = nullptr;
 	//_init_mutex.unlock();
 	return true;
@@ -49,37 +63,26 @@ bool AlgorithmControler::LoadSrc(cv::InputArray src)
 	return true;
 }
 
-bool AlgorithmControler::LoadSrc_Async(cv::InputArray src)
-{
-	throw std::logic_error("The method or operation is not implemented.");
-}
-
 bool AlgorithmControler::LoadSetting()
 {
-	throw std::logic_error("The method or operation is not implemented.");
-}
-bool AlgorithmControler::LoadSetting_Async()
-{
+	TRYRUN;
+	TRYWRITE;
 	throw std::logic_error("The method or operation is not implemented.");
 }
 bool AlgorithmControler::LoadParam()
 {
-	throw std::logic_error("The method or operation is not implemented.");
-}
-bool AlgorithmControler::LoadParam_Async()
-{
-	throw std::logic_error("The method or operation is not implemented.");
-}
-bool AlgorithmControler::ReadRst(cv::OutputArray rst)
-{
-	throw std::logic_error("The method or operation is not implemented.");
-}
-bool AlgorithmControler::ReadRst_Async(cv::OutputArray rst)
-{
+	TRYRUN;
+	TRYWRITE;
 	throw std::logic_error("The method or operation is not implemented.");
 }
 
-bool AlgorithmControler::ReadParam()
+bool AlgorithmControler::ReadRst(cv::OutputArray rst)
+{
+	TRYRUN;
+	throw std::logic_error("The method or operation is not implemented.");
+}
+
+bool AlgorithmControler::ReadParam()const
 {
 	throw std::logic_error("The method or operation is not implemented.");
 }
@@ -93,47 +96,49 @@ bool AlgorithmControler::ReadState()const
 bool AlgorithmControler::Run()
 {
 	TRYRUN;
-		
 	Mat tmp = _srcimg.clone();
 	for (auto i = 0; i < 50; i++)
 	{
+		if(_is_stop==true)//¼ì²éÊÇ·ñÍ£Ö¹
+			break;
+		while (_is_pause == true)//ÔÝÍ£Ê±×èÈû
+			_gui->wait(1);
+
 		char str[20];
 		sprintf_s<sizeof(str)>(str, "%d", i);
 		_gui->ShowText(str);
 		_gui->ShowImg(tmp);
-		_gui->wait(40);
+		//_gui->wait(40);
 		//Sleep(40);
+		int t = 0xFFFFFF;
+		while (t--);
 		tmp *= 1.02;
 	}
+	_is_stop = false;
+	_is_pause = false;
 	return true;
 }
 
 bool AlgorithmControler::RunOnce()
 {
+	TRYRUN;
 	throw std::logic_error("The method or operation is not implemented.");
 }
 
 bool AlgorithmControler::Pause()
 {
-	throw std::logic_error("The method or operation is not implemented.");
+	_is_pause = true;
+	return true;
 }
 bool AlgorithmControler::Resume()
 {
-	throw std::logic_error("The method or operation is not implemented.");
+	_is_pause = false;
+	return true;
 }
 bool AlgorithmControler::Stop()
 {
-	throw std::logic_error("The method or operation is not implemented.");
-}
-
-bool AlgorithmControler::Terminate()
-{
-	throw std::logic_error("The method or operation is not implemented.");
-}
-
-bool AlgorithmControler::Train()
-{
-	throw std::logic_error("The method or operation is not implemented.");
+	_is_stop = true;
+	return true;
 }
 
 bool AlgorithmControler::IsInit()const
@@ -141,7 +146,7 @@ bool AlgorithmControler::IsInit()const
 	return _is_init;
 }
 
-bool AlgorithmControler::IsRun()const
+bool AlgorithmControler::IsRun()
 {
 	try
 	{
@@ -150,7 +155,9 @@ bool AlgorithmControler::IsRun()const
 	}
 	catch (std::system_error e)
 	{
+#ifdef _DEBUG
 		_gui->ShowText(e.what());
+#endif // _DEBUG
 		return true;
 	}
 }

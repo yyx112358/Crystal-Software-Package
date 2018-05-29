@@ -2,26 +2,15 @@
 #include <QtWidgets/QMainWindow>
 #include "ui_CrystalSoftwarePackage.h"
 
-#include "..\Algorithm\Interface.h"
+#include "Warper.h"
 
-class CrystalSoftwarePackage : public QMainWindow,public Interface_GUI
+class CrystalSoftwarePackage : public QMainWindow
 {
 	Q_OBJECT
 
 public:
 	CrystalSoftwarePackage(QWidget *parent = Q_NULLPTR);
 	~CrystalSoftwarePackage();
-
-	virtual bool ShowImg(const cv::InputArray img) override;
-	virtual bool ShowText(std::string text) override;
-	virtual bool ReportProgress(int progress) override;
-	virtual bool ReportError(std::string msg) override;
-	virtual bool SaveData(const cv::InputArray data) override;
-
-	virtual bool IsInit() const override;
-	virtual bool IsBusy() const override;
-
-	virtual bool wait(int msec=0) const override;
 
 signals:
 	void sig_ShowImg(QPixmap img);
@@ -36,7 +25,7 @@ public slots:
 	void PauseAlg(bool ispause);
 private:
 	Ui::CrystalSoftwarePackageClass ui;
-	Interface_Alg*alg = nullptr;
+	Warper*alg = nullptr;
 
 
 };
