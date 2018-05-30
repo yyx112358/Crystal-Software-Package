@@ -28,7 +28,6 @@ bool AlgorithmControler::Init(const Interface_GUI*gui)
 	_srcimg.release();
 	_dstimg.release();
 	_is_init = true;
-	_gui->ShowText("====Algorithum Init [OK]====");
 	return true;
 }
 
@@ -127,7 +126,7 @@ bool AlgorithmControler::RunOnce()
 
 bool AlgorithmControler::Pause()
 {
-	_is_pause = true;
+	_is_pause = !_is_pause;
 	return true;
 }
 bool AlgorithmControler::Resume()

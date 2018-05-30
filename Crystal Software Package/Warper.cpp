@@ -34,6 +34,16 @@ void Warper::run()
 // 	_is_pause = false;
 }
 
+bool Warper::Pause()
+{
+	return AlgorithmControler::Pause();
+}
+
+bool Warper::Resume()
+{
+	return AlgorithmControler::Resume();
+}
+
 bool Warper::ShowImg(const cv::InputArray img)
 {
 	cv::Mat tmp = img.getMat();// .getMat();
@@ -74,10 +84,10 @@ bool Warper::IsBusy() const
 
 bool Warper::wait(int msec /*= 0*/) const
 {
-	QEventLoop eventloop;
-	QTimer::singleShot(msec, &eventloop, SLOT(quit())); //wait
-	eventloop.exec();
-
+// 	QEventLoop eventloop;
+// 	QTimer::singleShot(msec, &eventloop, SLOT(quit())); //wait
+// 	eventloop.exec();
+	msleep(msec);
 	return true;
 }
 

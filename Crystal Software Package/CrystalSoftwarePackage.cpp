@@ -30,6 +30,7 @@ CrystalSoftwarePackage::CrystalSoftwarePackage(QWidget *parent)
 
 	alg = new Warper;
 	connect(alg, &Warper::sig_ShowImg, ui.label, &QLabel::setPixmap);
+	connect(ui.pushButton_pause, &QPushButton::clicked, alg, &Warper::Pause);
 }
 
 CrystalSoftwarePackage::~CrystalSoftwarePackage()
