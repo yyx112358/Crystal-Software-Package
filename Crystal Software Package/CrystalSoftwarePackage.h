@@ -22,6 +22,10 @@ public slots:
 	void PauseAlg(bool ispause);
 	void DisplayState(State_E);
 
+	void LoadFiles2();
+	void RunAlg2();
+	void PauseAlg2(bool ispause);
+	void DisplayState2(State_E);
 private:
 	Ui::CrystalSoftwarePackageClass ui;
 	std::vector<Warpper*>algs{};

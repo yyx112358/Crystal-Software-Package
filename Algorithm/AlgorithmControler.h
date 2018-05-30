@@ -10,6 +10,11 @@
 #include <mutex>
 #include <atomic>
 #include <sstream>
+
+#ifdef _DEBUG
+//TODO 解决warning C4251问题 https://blog.csdn.net/shellching/article/details/7090742
+#pragma warning(disable: 4251)
+#endif // _DEBUG
 class ALGORITHM_API cv::Mat;
 class ALGORITHM_API std::mutex;
 struct ALGORITHM_API atomic_bool;
@@ -36,8 +41,7 @@ private:
 class ALGORITHM_API AlgorithmControler 
 	:public Interface_Alg 
 {
-private:
-	typedef std::lock_guard<std::mutex>alglock_t;
+protected:
 	cv::Mat _srcimg, _dstimg;
 	Interface_GUI*_gui;
 	State_E _sta = State_E::init_pre;
@@ -51,10 +55,10 @@ private:
  *	LOCKRUN、LOCKWRITE是RAII类，会在退出作用域之前自动解锁。
  *		故在线程安全的前提下，应尽量缩小作用域，尤其不能声明静态和全局作用域的LOCKRUN、LOCKWRITE
 */
+	typedef std::lock_guard<std::mutex>alglock_t;
 	std::mutex _write_mutex, _run_mutex;
 	#define LOCKRUN alglock_t lockrun(_run_mutex);//尝试运行。
 	#define LOCKWRITE alglock_t lockwrite(_write_mutex);//尝试写入
-//private:
 	std::atomic_bool _is_init = false, _is_pause = false, _is_stop = false;
 public:
 	AlgorithmControler(const Interface_GUI*gui):aout(gui) { Init(gui); }

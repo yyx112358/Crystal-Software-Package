@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="算法">
+      <UniqueIdentifier>{7b43cdbb-2cb1-4834-9009-0621e52512fc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -33,6 +36,10 @@
     <ClInclude Include="dllmain.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Alg_Simpletest.h">
+      <Filter>算法</Filter>
+    </ClInclude>
+    <ClInclude Include="AlgorithmTable.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -43,6 +50,9 @@
     </ClCompile>
     <ClCompile Include="AlgorithmControler.cpp">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Alg_Simpletest.cpp">
+      <Filter>算法</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

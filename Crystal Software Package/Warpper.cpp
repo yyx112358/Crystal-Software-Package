@@ -17,7 +17,7 @@ Warpper::Warpper() :AlgorithmControler(this)
 
 void Warpper::run()
 {
-	AlgorithmControler::Run();
+	Run();
 // 	cv::Mat img = _srcimg.clone();
 // 	for (auto i = 0; i < 50; i++)
 // 	{

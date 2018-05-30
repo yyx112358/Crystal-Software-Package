@@ -28,3 +28,20 @@ StdAfx.h, StdAfx.cpp
 应用程序向导使用“TODO:”注释来指示应添加或自定义的源代码部分。
 
 /////////////////////////////////////////////////////////////////////////////
+
+
+添加新算法步骤：
+1.新建一个cpp和h文件，例如Alg_Simpletest.h和Alg_Sipletest.cpp
+2.包含头文件#include "AlgorithmControler.h"，并将本文件头文件添加到AlgorithmTable.h
+3.建立一个类，公有继承AlgorithmControler如下，并重写Run()函数
+	class ALGORITHM_API Alg_Simpletest :
+		public AlgorithmControler
+	{
+	public:
+		Alg_Simpletest(Interface_GUI*gui):AlgorithmControler(gui){}
+		virtual ~Alg_Simpletest() {}
+
+		virtual bool Run() override;
+
+	};
+4.在Run()中实现算法（Run()类似于main()函数），源图像为_srcimg，结果输出到_dstimg

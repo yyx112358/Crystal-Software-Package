@@ -97,7 +97,6 @@ public:
 	virtual bool IsRun() = 0;//检查是否正在运行
 	virtual bool IsWrite() = 0;//检查是否正在写入
 };
-ALGORITHM_API Interface_Alg*Create_Interface_Alg(const Interface_GUI*gui);
 
 /*接口纯虚类
 	后台算法向GUI通信

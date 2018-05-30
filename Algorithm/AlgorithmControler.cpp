@@ -9,11 +9,6 @@
 using namespace std;
 using namespace cv;
 
-Interface_Alg* Create_Interface_Alg(const Interface_GUI*gui)
-{
-	return new AlgorithmControler(gui);
-}
-
 bool AlgorithmControler::Init(const Interface_GUI*gui)
 {
 	//CHANGE_STATE(State_E::init_pre);
@@ -106,12 +101,12 @@ State_E AlgorithmControler::ReadState()const
 	return _sta;
 }
 
-//#include <windows.h>
 bool AlgorithmControler::Run()
 {
 	CHANGE_STATE(State_E::run_pre);
 	LOCKRUN;
-	Mat tmp = _srcimg.clone();
+	Mat src = _srcimg.clone();
+	//TODO...
 	CHANGE_STATE(State_E::run_ing);
 	for (auto i = 0; i < 50; i++)
 	{
@@ -129,19 +124,14 @@ bool AlgorithmControler::Run()
 			CHANGE_STATE(State_E::pause_end);
 		}
 		CHANGE_STATE(State_E::iter_ing);
-
-// 		char str[20];
-// 		sprintf_s<sizeof(str)>(str, "%d", i);
-// 		_gui->ShowText(str);
-		aout << i;
-		_gui->ShowImg(tmp);
-		//_gui->wait(40);
-		//Sleep(40);
-		int t = 0x1FFFFFF;
-		while (t--);
-		tmp *= 1.02;
+		//TODO...
+		src = ~src;
+		_gui->ShowImg(src);
+		_gui->wait(100);
 		CHANGE_STATE(State_E::iter_end);
 	}
+	//TODO...
+	_dstimg = src;
 	if(State_E::stop_end!=_sta)
 		CHANGE_STATE(State_E::run_end);
 	_is_stop = false;

@@ -133,6 +133,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Algorithm\Interface.h" />
+    <ClInclude Include="WarperTable.h" />
     <QtMoc Include="Warpper.h" />
     <ClInclude Include="stdafx.h" />
     <QtMoc Include="CrystalSoftwarePackage.h" />

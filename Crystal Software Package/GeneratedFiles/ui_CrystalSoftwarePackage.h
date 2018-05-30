@@ -38,6 +38,9 @@ public:
     QProgressBar *progressBar;
     QLabel *label_2;
     QTextBrowser *textBrowser_2;
+    QPushButton *pushButton_load_2;
+    QPushButton *pushButton_pause_2;
+    QPushButton *pushButton_run_2;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -75,6 +78,16 @@ public:
         textBrowser_2 = new QTextBrowser(centralWidget);
         textBrowser_2->setObjectName(QStringLiteral("textBrowser_2"));
         textBrowser_2->setGeometry(QRect(1480, 150, 191, 361));
+        pushButton_load_2 = new QPushButton(centralWidget);
+        pushButton_load_2->setObjectName(QStringLiteral("pushButton_load_2"));
+        pushButton_load_2->setGeometry(QRect(1540, 20, 93, 28));
+        pushButton_pause_2 = new QPushButton(centralWidget);
+        pushButton_pause_2->setObjectName(QStringLiteral("pushButton_pause_2"));
+        pushButton_pause_2->setGeometry(QRect(1540, 110, 93, 28));
+        pushButton_pause_2->setCheckable(true);
+        pushButton_run_2 = new QPushButton(centralWidget);
+        pushButton_run_2->setObjectName(QStringLiteral("pushButton_run_2"));
+        pushButton_run_2->setGeometry(QRect(1540, 60, 91, 31));
         CrystalSoftwarePackageClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(CrystalSoftwarePackageClass);
         menuBar->setObjectName(QStringLiteral("menuBar"));
@@ -100,6 +113,9 @@ public:
         pushButton_load->setText(QApplication::translate("CrystalSoftwarePackageClass", "\350\275\275\345\205\245", Q_NULLPTR));
         pushButton_pause->setText(QApplication::translate("CrystalSoftwarePackageClass", "\346\232\202\345\201\234", Q_NULLPTR));
         label_2->setText(QApplication::translate("CrystalSoftwarePackageClass", "TextLabel", Q_NULLPTR));
+        pushButton_load_2->setText(QApplication::translate("CrystalSoftwarePackageClass", "\350\275\275\345\205\245", Q_NULLPTR));
+        pushButton_pause_2->setText(QApplication::translate("CrystalSoftwarePackageClass", "\346\232\202\345\201\234", Q_NULLPTR));
+        pushButton_run_2->setText(QApplication::translate("CrystalSoftwarePackageClass", "\350\277\220\350\241\214", Q_NULLPTR));
     } // retranslateUi
 
 };
