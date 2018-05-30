@@ -59,10 +59,10 @@
     <ClCompile Include="AlgorithmTable.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Alg_ComplexTest.cpp">
+    <ClCompile Include="AlgorithmControler.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="AlgorithmControler.cpp">
+    <ClCompile Include="Alg_ComplexTest.cpp">
       <Filter>算法</Filter>
     </ClCompile>
   </ItemGroup>

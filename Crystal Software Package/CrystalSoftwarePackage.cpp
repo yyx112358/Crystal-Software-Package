@@ -36,11 +36,11 @@ CrystalSoftwarePackage::CrystalSoftwarePackage(QWidget *parent)
 	algs.push_back(warpper);
 	connect(warpper, &Warpper::sig_ShowImg, ui.label_2, &QLabel::setPixmap);
 	connect(warpper, &Warpper::sig_ShowText, ui.textBrowser_2, &QTextBrowser::append);
-	connect(warpper, &Warpper::sig_ReportState, this, &CrystalSoftwarePackage::DisplayState2);
+	connect(warpper, &Warpper::sig_ReportState, this, &CrystalSoftwarePackage::DisplayState);
 	connect(ui.pushButton_pause_2, &QPushButton::clicked, warpper, &Warpper::Pause);
 
-	connect(ui.pushButton_load_2, &QPushButton::clicked, this, &CrystalSoftwarePackage::LoadFiles2);
-	connect(ui.pushButton_run_2, &QPushButton::clicked, this, &CrystalSoftwarePackage::RunAlg2);
+	connect(ui.pushButton_load_2, &QPushButton::clicked, this, &CrystalSoftwarePackage::LoadFiles);
+	connect(ui.pushButton_run_2, &QPushButton::clicked, this, &CrystalSoftwarePackage::RunAlg);
 	ui.pushButton_run_2->setEnabled(false);
 }
 
@@ -52,41 +52,50 @@ CrystalSoftwarePackage::~CrystalSoftwarePackage()
 
 void CrystalSoftwarePackage::LoadFiles()
 {
-	QString filename = QFileDialog::getOpenFileName(this, tr(u8"打开文件"), ".", tr(u8"图片文件(*.jpg *.jpeg *.png *.bmp)"));
-	if( false==filename.isEmpty())
-	{
+	QString filename = QFileDialog::getOpenFileName(this, tr(u8"打开文件"), ".\\resource", tr(u8"图片文件(*.jpg *.jpeg *.png *.bmp)"));
+	QImage qimg(filename);
+	if (false == filename.isEmpty())
 		QImage qimg(filename);
-		qDebug() << __FUNCTION__ << '[' << algs[0]->LoadSrc(Mat(qimg.height(), qimg.width(), CV_8UC4, qimg.bits())) << ']';
-		ui.pushButton_run->setEnabled(true);
-		ui.label->setPixmap(QPixmap::fromImage(qimg));
-	}
 	else
+		return;
+		//QImage qimg(u8".\\Crystal Software Package\\resource\\testpic.jpg");
+	
+	Warpper*warper = nullptr;
+	if ((size_t)sender() == (size_t)ui.pushButton_load)
 	{
-#ifdef _DEBUG
-		QImage qimg(u8"..\\Crystal Software Package\\resource\\testpic.jpg");
-		qDebug() << __FUNCTION__ << '[' << algs[0]->LoadSrc(Mat(qimg.height(), qimg.width(), CV_8UC4, qimg.bits())) << ']';
+		algs[0]->LoadSrc(Mat(qimg.height(), qimg.width(), CV_8UC4, qimg.bits()));
 		ui.pushButton_run->setEnabled(true);
 		ui.label->setPixmap(QPixmap::fromImage(qimg));
-#endif // _DEBUG
 	}
+	else if ((size_t)sender() == (size_t)ui.pushButton_load_2)
+	{
+		algs[1]->LoadSrc(Mat(qimg.height(), qimg.width(), CV_8UC4, qimg.bits()));
+		ui.pushButton_run_2->setEnabled(true);
+		ui.label_2->setPixmap(QPixmap::fromImage(qimg));
+	}
+
 	return;
 }
 
 void CrystalSoftwarePackage::RunAlg()
 {
-	if (algs[0]->IsRun() == true) 
+	Warpper*warper = nullptr;
+	if ((size_t)sender() == (size_t)ui.pushButton_run)
+		warper=algs[0];
+	else if ((size_t)sender() == (size_t)ui.pushButton_run_2)
+		warper = algs[1];
+	if (warper->IsRun() == true)
 	{
 		qDebug() << "running...";
-		algs[0]->Stop();
+		warper->Stop();
 		return;
 	}
 	//ui.pushButton_run->setText("暂停");
 	//disconnect(ui.pushButton_run, &QPushButton::clicked, this, &CrystalSoftwarePackage::RunAlg);
 	try {
-		ui.pushButton_run->setText(u8"停止");
 		qDebug() << "start...";
 		//alg->run();
-		algs[0]->start();
+		warper->start();
 		qDebug() << "over...";
 	}
 	catch (std::system_error e)
@@ -103,62 +112,8 @@ void CrystalSoftwarePackage::PauseAlg(bool ispause)
 
 void CrystalSoftwarePackage::DisplayState(State_E state)
 {
-	ui.textBrowser->append(State_Str[static_cast<int>(state)]);
-}
-
-
-void CrystalSoftwarePackage::LoadFiles2()
-{
-	QString filename = QFileDialog::getOpenFileName(this, tr(u8"打开文件"), ".", tr(u8"图片文件(*.jpg *.jpeg *.png *.bmp)"));
-	if (false == filename.isEmpty())
-	{
-		QImage qimg(filename);
-		qDebug() << __FUNCTION__ << '[' << algs[1]->LoadSrc(Mat(qimg.height(), qimg.width(), CV_8UC4, qimg.bits())) << ']';
-		ui.pushButton_run_2->setEnabled(true);
-		ui.label_2->setPixmap(QPixmap::fromImage(qimg));
-	}
-	else
-	{
-#ifdef _DEBUG
-		QImage qimg(u8"..\\Crystal Software Package\\resource\\testpic.jpg");
-		qDebug() << __FUNCTION__ << '[' << algs[1]->LoadSrc(Mat(qimg.height(), qimg.width(), CV_8UC4, qimg.bits())) << ']';
-		ui.pushButton_run_2->setEnabled(true);
-		ui.label_2->setPixmap(QPixmap::fromImage(qimg));
-#endif // _DEBUG
-	}
-	return;
-}
-
-void CrystalSoftwarePackage::RunAlg2()
-{
-	if (algs[1]->IsRun() == true)
-	{
-		qDebug() << "running...";
-		algs[1]->Stop();
-		return;
-	}
-	//ui.pushButton_run->setText("暂停");
-	//disconnect(ui.pushButton_run, &QPushButton::clicked, this, &CrystalSoftwarePackage::RunAlg);
-	try {
-		ui.pushButton_run_2->setText(u8"停止");
-		qDebug() << "start...";
-		//alg->run();
-		algs[1]->start();
-		qDebug() << "over...";
-	}
-	catch (std::system_error e)
-	{
-		qDebug() << e.what();
-	}
-	//connect(ui.pushButton_run, &QPushButton::clicked, this, &CrystalSoftwarePackage::RunAlg);
-}
-
-void CrystalSoftwarePackage::PauseAlg2(bool ispause)
-{
-
-}
-
-void CrystalSoftwarePackage::DisplayState2(State_E state)
-{
-	ui.textBrowser_2->append(State_Str[static_cast<int>(state)]);
+	if ((size_t)sender() == (size_t)algs[0])
+		ui.textBrowser->append(State_Str[static_cast<int>(state)]);
+	else if ((size_t)sender() == (size_t)algs[1])
+		ui.textBrowser_2->append(State_Str[static_cast<int>(state)]);
 }

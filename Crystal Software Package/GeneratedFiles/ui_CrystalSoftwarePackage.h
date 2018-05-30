@@ -19,6 +19,7 @@
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QProgressBar>
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QSlider>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QTextBrowser>
 #include <QtWidgets/QToolBar>
@@ -41,6 +42,10 @@ public:
     QPushButton *pushButton_load_2;
     QPushButton *pushButton_pause_2;
     QPushButton *pushButton_run_2;
+    QSlider *horizontalSlider;
+    QSlider *horizontalSlider_2;
+    QSlider *horizontalSlider_3;
+    QSlider *horizontalSlider_4;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -70,7 +75,7 @@ public:
         pushButton_pause->setCheckable(true);
         progressBar = new QProgressBar(centralWidget);
         progressBar->setObjectName(QStringLiteral("progressBar"));
-        progressBar->setGeometry(QRect(10, 578, 861, 21));
+        progressBar->setGeometry(QRect(490, 590, 731, 21));
         progressBar->setValue(0);
         label_2 = new QLabel(centralWidget);
         label_2->setObjectName(QStringLiteral("label_2"));
@@ -88,6 +93,22 @@ public:
         pushButton_run_2 = new QPushButton(centralWidget);
         pushButton_run_2->setObjectName(QStringLiteral("pushButton_run_2"));
         pushButton_run_2->setGeometry(QRect(1540, 60, 91, 31));
+        horizontalSlider = new QSlider(centralWidget);
+        horizontalSlider->setObjectName(QStringLiteral("horizontalSlider"));
+        horizontalSlider->setGeometry(QRect(20, 550, 391, 22));
+        horizontalSlider->setOrientation(Qt::Horizontal);
+        horizontalSlider_2 = new QSlider(centralWidget);
+        horizontalSlider_2->setObjectName(QStringLiteral("horizontalSlider_2"));
+        horizontalSlider_2->setGeometry(QRect(20, 600, 391, 22));
+        horizontalSlider_2->setOrientation(Qt::Horizontal);
+        horizontalSlider_3 = new QSlider(centralWidget);
+        horizontalSlider_3->setObjectName(QStringLiteral("horizontalSlider_3"));
+        horizontalSlider_3->setGeometry(QRect(1260, 550, 391, 22));
+        horizontalSlider_3->setOrientation(Qt::Horizontal);
+        horizontalSlider_4 = new QSlider(centralWidget);
+        horizontalSlider_4->setObjectName(QStringLiteral("horizontalSlider_4"));
+        horizontalSlider_4->setGeometry(QRect(1260, 590, 391, 22));
+        horizontalSlider_4->setOrientation(Qt::Horizontal);
         CrystalSoftwarePackageClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(CrystalSoftwarePackageClass);
         menuBar->setObjectName(QStringLiteral("menuBar"));

@@ -11,7 +11,7 @@ bool Alg_ComplexTest::Run()
 	//TODO
 	Mat tmp = _srcimg.clone();
 	CHANGE_STATE(State_E::run_ing);
-	for (auto i = 0; i < 50; i++)
+	for (auto i = 0; i < 51; i++)
 	{
 		CHANGE_STATE(State_E::iter_pre);
 		if (_is_stop == true)//¼ì²éÊÇ·ñÍ£Ö¹
