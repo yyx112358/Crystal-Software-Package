@@ -9,38 +9,6 @@
 
 using namespace cv;
 
-Warpper::Warpper() :AlgorithmControler(this)
-{
-	qRegisterMetaType<State_E>("State_E");
-	/*aout << "====Algorithm Init [OK]====";*/
-}
-
-void Warpper::run()
-{
-	Run();
-// 	cv::Mat img = _srcimg.clone();
-// 	for (auto i = 0; i < 50; i++)
-// 	{
-// 		if (_is_stop == true)//¼ì²éÊÇ·ñÍ£Ö¹
-// 			break;
-// 		while (_is_pause == true)//ÔÝÍ£Ê±×èÈû
-// 			_gui->wait(1);
-// 
-// 		char str[20];
-// 		sprintf_s<sizeof(str)>(str, "%d", i);
-// 		_gui->ShowText(str);
-// 		
-// 		_gui->ShowImg(tmp);
-// 		//_gui->wait(40);
-// 		//Sleep(40);
-// 		int t = 0xFFFFFF;
-// 		while (t--);
-// 		tmp *= 1.02;
-// 	}
-// 	_is_stop = false;
-// 	_is_pause = false;
-}
-
 
 bool Warpper::ShowImg(const cv::InputArray img)
 {

@@ -6,7 +6,7 @@
 #include <QFileDialog>
 
 #include "CrystalSoftwarePackage.h"
-#include "WarperTable.h"
+//#include "WarperTable.h"
 #ifdef _DEBUG
 #pragma comment(lib, "..\\x64\\Debug\\Algorithm.lib")
 #else
@@ -21,7 +21,7 @@ CrystalSoftwarePackage::CrystalSoftwarePackage(QWidget *parent)
 {
 	ui.setupUi(this);
 
-	Warpper*warpper = new Warper_Simpletest;
+	Warpper*warpper = new Warpper(Create_Alg_Simpletest);
 	algs.push_back(warpper);
 	connect(warpper, &Warpper::sig_ShowImg, ui.label, &QLabel::setPixmap);
 	connect(warpper, &Warpper::sig_ShowText, ui.textBrowser, &QTextBrowser::append);
@@ -32,7 +32,7 @@ CrystalSoftwarePackage::CrystalSoftwarePackage(QWidget *parent)
 	connect(ui.pushButton_run, &QPushButton::clicked, this, &CrystalSoftwarePackage::RunAlg);
 	ui.pushButton_run->setEnabled(false);
 
-	warpper = new Warpper;
+	warpper = new Warpper(Create_Alg_Complextest);
 	algs.push_back(warpper);
 	connect(warpper, &Warpper::sig_ShowImg, ui.label_2, &QLabel::setPixmap);
 	connect(warpper, &Warpper::sig_ShowText, ui.textBrowser_2, &QTextBrowser::append);

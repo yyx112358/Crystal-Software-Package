@@ -39,7 +39,12 @@
     <ClInclude Include="Alg_Simpletest.h">
       <Filter>算法</Filter>
     </ClInclude>
-    <ClInclude Include="AlgorithmTable.h" />
+    <ClInclude Include="AlgorithmTable.h">
+      <Filter>算法</Filter>
+    </ClInclude>
+    <ClInclude Include="Alg_ComplexTest.h">
+      <Filter>算法</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -48,10 +53,16 @@
     <ClCompile Include="dllmain.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="AlgorithmControler.cpp">
+    <ClCompile Include="Alg_Simpletest.cpp">
+      <Filter>算法</Filter>
+    </ClCompile>
+    <ClCompile Include="AlgorithmTable.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Alg_Simpletest.cpp">
+    <ClCompile Include="Alg_ComplexTest.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="AlgorithmControler.cpp">
       <Filter>算法</Filter>
     </ClCompile>
   </ItemGroup>

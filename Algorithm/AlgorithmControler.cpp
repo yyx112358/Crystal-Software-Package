@@ -101,44 +101,44 @@ State_E AlgorithmControler::ReadState()const
 	return _sta;
 }
 
-bool AlgorithmControler::Run()
-{
-	CHANGE_STATE(State_E::run_pre);
-	LOCKRUN;
-	Mat src = _srcimg.clone();
-	//TODO...
-	CHANGE_STATE(State_E::run_ing);
-	for (auto i = 0; i < 50; i++)
-	{
-		CHANGE_STATE(State_E::iter_pre);
-		if(_is_stop==true)//¼ì²éÊÇ·ñÍ£Ö¹
-		{
-			CHANGE_STATE(State_E::stop_end);
-			break;
-		}
-		if (_is_pause == true)
-		{
-			CHANGE_STATE(State_E::pause_ing);
-			while (_is_pause == true)//ÔÝÍ£Ê±×èÈû
-				_gui->wait(1);
-			CHANGE_STATE(State_E::pause_end);
-		}
-		CHANGE_STATE(State_E::iter_ing);
-		//TODO...
-		src = ~src;
-		_gui->ShowImg(src);
-		_gui->wait(100);
-		CHANGE_STATE(State_E::iter_end);
-	}
-	//TODO...
-	_dstimg = src;
-	if(State_E::stop_end!=_sta)
-		CHANGE_STATE(State_E::run_end);
-	_is_stop = false;
-	_is_pause = false;
-	
-	return true;
-}
+// bool AlgorithmControler::Run()
+// {
+// 	CHANGE_STATE(State_E::run_pre);
+// 	LOCKRUN;
+// 	Mat src = _srcimg.clone();
+// 	//TODO...
+// 	CHANGE_STATE(State_E::run_ing);
+// 	for (auto i = 0; i < 50; i++)
+// 	{
+// 		CHANGE_STATE(State_E::iter_pre);
+// 		if(_is_stop==true)//¼ì²éÊÇ·ñÍ£Ö¹
+// 		{
+// 			CHANGE_STATE(State_E::stop_end);
+// 			break;
+// 		}
+// 		if (_is_pause == true)
+// 		{
+// 			CHANGE_STATE(State_E::pause_ing);
+// 			while (_is_pause == true)//ÔÝÍ£Ê±×èÈû
+// 				_gui->wait(1);
+// 			CHANGE_STATE(State_E::pause_end);
+// 		}
+// 		CHANGE_STATE(State_E::iter_ing);
+// 		//TODO...
+// 		src = ~src;
+// 		_gui->ShowImg(src);
+// 		_gui->wait(100);
+// 		CHANGE_STATE(State_E::iter_end);
+// 	}
+// 	//TODO...
+// 	_dstimg = src;
+// 	if(State_E::stop_end!=_sta)
+// 		CHANGE_STATE(State_E::run_end);
+// 	_is_stop = false;
+// 	_is_pause = false;
+// 	
+// 	return true;
+// }
 
 bool AlgorithmControler::Pause(bool ispause)
 {

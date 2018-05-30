@@ -76,7 +76,7 @@ public:
 	virtual bool ReadParam() const override;
 	virtual State_E ReadState()const override;
 
-	virtual bool Run() override;
+	//virtual bool Run() override;
 	virtual bool Pause(bool ispause) override;
 	virtual bool Stop() override;
 

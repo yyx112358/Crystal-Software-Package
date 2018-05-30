@@ -149,6 +149,7 @@
   <ItemGroup>
     <ClInclude Include="AlgorithmControler.h" />
     <ClInclude Include="AlgorithmTable.h" />
+    <ClInclude Include="Alg_ComplexTest.h" />
     <ClInclude Include="Alg_Simpletest.h" />
     <ClInclude Include="dllmain.h" />
     <ClInclude Include="Interface.h" />
@@ -157,6 +158,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AlgorithmControler.cpp" />
+    <ClCompile Include="AlgorithmTable.cpp" />
+    <ClCompile Include="Alg_ComplexTest.cpp" />
     <ClCompile Include="Alg_Simpletest.cpp" />
     <ClCompile Include="dllmain.cpp">
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
