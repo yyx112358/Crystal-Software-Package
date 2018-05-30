@@ -13,11 +13,7 @@ public:
 	~CrystalSoftwarePackage();
 
 signals:
-	void sig_ShowImg(QPixmap img);
-	void sig_ShowText(QString str);
-	void sig_ReportProgress();
-	void sig_SaveData();
-	void sig_ReportError();
+
 
 public slots:
 	void LoadFiles();

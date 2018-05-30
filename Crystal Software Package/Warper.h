@@ -1,7 +1,7 @@
 #pragma once
 #include "qthread.h"
 #include "..\Algorithm\AlgorithmControler.h"
-
+#include <QStringList>
 
 class Warper :
 	public QThread,public AlgorithmControler,public Interface_GUI
@@ -9,18 +9,12 @@ class Warper :
 	Q_OBJECT
 
 public:
-	Warper():AlgorithmControler(this){}
+	Warper() :AlgorithmControler(this) { /*aout << "====Algorithm Init [OK]====";*/ }
 	virtual ~Warper(){}
 
 	virtual void run() override;
 
-
-
-
-	virtual bool Pause() override;
-
-
-	virtual bool Resume() override;
+	virtual bool Pause(bool ispause) override{return AlgorithmControler::Pause(ispause);}
 
 signals:
 	void sig_ShowImg(QPixmap);
@@ -30,7 +24,6 @@ signals:
 	bool sig_SaveData();
 
 private:
-
 	virtual bool ShowImg(const cv::InputArray img) override;
 	virtual bool ShowText(std::string text) override;
 	virtual bool ReportProgress(int progress) override;
@@ -41,7 +34,7 @@ private:
 	//virtual bool Interface_GUI::IsInit()const override { return true; }
 	virtual bool wait(int msec = 0) const override;
 
-	
+	QStringList filenames;
 
 };
 

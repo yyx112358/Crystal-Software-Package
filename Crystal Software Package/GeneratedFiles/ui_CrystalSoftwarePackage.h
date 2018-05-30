@@ -60,6 +60,7 @@ public:
         pushButton_pause = new QPushButton(centralWidget);
         pushButton_pause->setObjectName(QStringLiteral("pushButton_pause"));
         pushButton_pause->setGeometry(QRect(10, 120, 93, 28));
+        pushButton_pause->setCheckable(true);
         CrystalSoftwarePackageClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(CrystalSoftwarePackageClass);
         menuBar->setObjectName(QStringLiteral("menuBar"));

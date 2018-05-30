@@ -46,12 +46,12 @@ public:
 
 	virtual bool Run() = 0;//运行（连续）
 	virtual bool RunOnce() = 0;//运行（单次）
-	virtual bool Pause() = 0;//暂停
-	virtual bool Resume() = 0;//恢复
+	virtual bool Pause(bool ispause) = 0;//暂停
 	virtual bool Stop() = 0;//停止（完成当前迭代之后）
 
 	virtual bool IsInit() const = 0;//检查是否初始化完成
-	virtual bool IsRun() = 0;//检查是否忙
+	virtual bool IsRun() = 0;//检查是否正在运行
+	virtual bool IsWrite() = 0;//检查是否正在写入
 };
 ALGORITHM_API Interface_Alg*Create_Interface_Alg(const Interface_GUI*gui);
 

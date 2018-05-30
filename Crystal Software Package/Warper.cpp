@@ -34,15 +34,6 @@ void Warper::run()
 // 	_is_pause = false;
 }
 
-bool Warper::Pause()
-{
-	return AlgorithmControler::Pause();
-}
-
-bool Warper::Resume()
-{
-	return AlgorithmControler::Resume();
-}
 
 bool Warper::ShowImg(const cv::InputArray img)
 {

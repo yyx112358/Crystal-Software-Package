@@ -21,8 +21,8 @@ bool AlgorithmControler::Init(const Interface_GUI*gui)
 	_gui = const_cast<Interface_GUI*>(gui);
 
 	//Reset();
-	TRYRUN;
-	TRYWRITE;
+	LOCKRUN;
+	LOCKWRITE;
 	_is_pause = false;
 	_is_stop = false;
 	_srcimg.release();
@@ -44,8 +44,10 @@ bool AlgorithmControler::Reset()
 
 bool AlgorithmControler::Release()
 {
-	TRYRUN;
-	TRYWRITE;
+	Stop();
+	while (IsRun() == true || IsWrite() == true);
+	LOCKRUN;
+	LOCKWRITE;
 	_is_init = false;
 	Reset();
 	_gui = nullptr;
@@ -54,8 +56,9 @@ bool AlgorithmControler::Release()
 }
 bool AlgorithmControler::LoadSrc(cv::InputArray src)
 {
-	TRYRUN;
-	TRYWRITE;
+	if (IsWrite() == true)
+		return false;
+	LOCKWRITE;
 	_srcimg = src.getMat().clone();
 	_gui->ShowText("OK");
 
@@ -64,21 +67,26 @@ bool AlgorithmControler::LoadSrc(cv::InputArray src)
 
 bool AlgorithmControler::LoadSetting()
 {
-	TRYRUN;
-	TRYWRITE;
+	if (IsWrite() == true)
+		return false;
+	LOCKRUN;
+	LOCKWRITE;
 	throw std::logic_error("The method or operation is not implemented.");
 }
 bool AlgorithmControler::LoadParam()
 {
-	TRYRUN;
-	TRYWRITE;
+	if (IsWrite() == true)
+		return false;
+	LOCKRUN;
+	LOCKWRITE;
 	throw std::logic_error("The method or operation is not implemented.");
 }
 
 bool AlgorithmControler::ReadRst(cv::OutputArray rst)
 {
-	TRYRUN;
+	LOCKRUN;
 	throw std::logic_error("The method or operation is not implemented.");
+	return !IsRun();//正在运行时返回false，说明当前结果不一定有效
 }
 
 bool AlgorithmControler::ReadParam()const
@@ -94,7 +102,7 @@ bool AlgorithmControler::ReadState()const
 //#include <windows.h>
 bool AlgorithmControler::Run()
 {
-	TRYRUN;
+	LOCKRUN;
 	Mat tmp = _srcimg.clone();
 	for (auto i = 0; i < 50; i++)
 	{
@@ -103,13 +111,14 @@ bool AlgorithmControler::Run()
 		while (_is_pause == true)//暂停时阻塞
 			_gui->wait(1);
 
-		char str[20];
-		sprintf_s<sizeof(str)>(str, "%d", i);
-		_gui->ShowText(str);
+// 		char str[20];
+// 		sprintf_s<sizeof(str)>(str, "%d", i);
+// 		_gui->ShowText(str);
+		aout << i;
 		_gui->ShowImg(tmp);
 		//_gui->wait(40);
 		//Sleep(40);
-		int t = 0xFFFFFF;
+		int t = 0x4FFFFFF;
 		while (t--);
 		tmp *= 1.02;
 	}
@@ -120,23 +129,19 @@ bool AlgorithmControler::Run()
 
 bool AlgorithmControler::RunOnce()
 {
-	TRYRUN;
+	LOCKRUN;
 	throw std::logic_error("The method or operation is not implemented.");
 }
 
-bool AlgorithmControler::Pause()
+bool AlgorithmControler::Pause(bool ispause)
 {
-	_is_pause = !_is_pause;
-	return true;
-}
-bool AlgorithmControler::Resume()
-{
-	_is_pause = false;
+	_is_pause = ispause;
 	return true;
 }
 bool AlgorithmControler::Stop()
 {
 	_is_stop = true;
+	_is_pause = false;
 	return true;
 }
 
@@ -147,20 +152,57 @@ bool AlgorithmControler::IsInit()const
 
 bool AlgorithmControler::IsRun()
 {
-	try
+	bool b = _run_mutex.try_lock();
+	if (true == b)
 	{
-		TRYRUN;
+		_run_mutex.unlock();
 		return false;
 	}
-	catch (std::system_error e)
+	else
 	{
-#ifdef _DEBUG
-		_gui->ShowText(e.what());
-#endif // _DEBUG
 		return true;
 	}
+//单线程下用这个
+// 	try
+// 	{
+// 		LOCKRUN;
+// 		return false;
+// 	}
+// 	catch (std::system_error e)
+// 	{
+// #ifdef _DEBUG
+// 		_gui->ShowText(e.what());
+// #endif // _DEBUG
+// 		return true;
+// 	}
 }
 
+bool AlgorithmControler::IsWrite()
+{
+	bool b = _write_mutex.try_lock();
+	if (true == b)
+	{
+		_write_mutex.unlock();
+		return false;
+	}
+	else
+	{
+		return true;
+	}
+//单线程下用这个
+// 	try
+// 	{
+// 		LOCKWRITE;
+// 		return false;
+// 	}
+// 	catch (std::system_error e)
+// 	{
+// #ifdef _DEBUG
+// 		_gui->ShowText(e.what());
+// #endif // _DEBUG
+// 		return true;
+// 	}
+}
 
 
 
