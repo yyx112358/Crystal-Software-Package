@@ -24,17 +24,18 @@ CrystalSoftwarePackage::CrystalSoftwarePackage(QWidget *parent)
 	connect(ui.pushButton_run, &QPushButton::clicked, this, &CrystalSoftwarePackage::RunAlg);
 		
 	ui.pushButton_run->setEnabled(false);
-	//qRegisterMetaType<Mat>("Mat");
 
-	alg = new Warper;
-	connect(alg, &Warper::sig_ShowImg, ui.label, &QLabel::setPixmap);
-	connect(alg, &Warper::sig_ShowText, ui.textBrowser, &QTextBrowser::append);
-	connect(ui.pushButton_pause, &QPushButton::clicked, alg, &Warper::Pause);
+	algs.push_back(new Warpper);
+	connect(algs[0], &Warpper::sig_ShowImg, ui.label, &QLabel::setPixmap);
+	connect(algs[0], &Warpper::sig_ShowText, ui.textBrowser, &QTextBrowser::append);
+	connect(algs[0], &Warpper::sig_ReportState, this,&CrystalSoftwarePackage::DisplayState);
+	connect(ui.pushButton_pause, &QPushButton::clicked, algs[0], &Warpper::Pause);
 }
 
 CrystalSoftwarePackage::~CrystalSoftwarePackage()
 {
-	delete alg;
+	for (auto alg : algs)
+		delete alg;
 }
 
 void CrystalSoftwarePackage::LoadFiles()
@@ -43,7 +44,7 @@ void CrystalSoftwarePackage::LoadFiles()
 	if( false==filename.isEmpty())
 	{
 		QImage qimg(filename);
-		qDebug() << __FUNCTION__ << '[' << alg->LoadSrc(Mat(qimg.height(), qimg.width(), CV_8UC4, qimg.bits())) << ']';
+		qDebug() << __FUNCTION__ << '[' << algs[0]->LoadSrc(Mat(qimg.height(), qimg.width(), CV_8UC4, qimg.bits())) << ']';
 		ui.pushButton_run->setEnabled(true);
 		ui.label->setPixmap(QPixmap::fromImage(qimg));
 	}
@@ -51,7 +52,7 @@ void CrystalSoftwarePackage::LoadFiles()
 	{
 #ifdef _DEBUG
 		QImage qimg(u8"..\\Crystal Software Package\\resource\\testpic.jpg");
-		qDebug() << __FUNCTION__ << '[' << alg->LoadSrc(Mat(qimg.height(), qimg.width(), CV_8UC4, qimg.bits())) << ']';
+		qDebug() << __FUNCTION__ << '[' << algs[0]->LoadSrc(Mat(qimg.height(), qimg.width(), CV_8UC4, qimg.bits())) << ']';
 		ui.pushButton_run->setEnabled(true);
 		ui.label->setPixmap(QPixmap::fromImage(qimg));
 #endif // _DEBUG
@@ -61,10 +62,10 @@ void CrystalSoftwarePackage::LoadFiles()
 
 void CrystalSoftwarePackage::RunAlg()
 {
-	if (alg->IsRun() == true) 
+	if (algs[0]->IsRun() == true) 
 	{
 		qDebug() << "running...";
-		alg->Stop();
+		algs[0]->Stop();
 		return;
 	}
 	//ui.pushButton_run->setText("暂停");
@@ -73,7 +74,7 @@ void CrystalSoftwarePackage::RunAlg()
 		ui.pushButton_run->setText(u8"停止");
 		qDebug() << "start...";
 		//alg->run();
-		alg->start();
+		algs[0]->start();
 		qDebug() << "over...";
 	}
 	catch (std::system_error e)
@@ -87,3 +88,9 @@ void CrystalSoftwarePackage::PauseAlg(bool ispause)
 {
 
 }
+
+void CrystalSoftwarePackage::DisplayState(State_E state)
+{
+	ui.textBrowser->append(State_Str[static_cast<int>(state)]);
+}
+

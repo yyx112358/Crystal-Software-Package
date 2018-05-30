@@ -1,14 +1,21 @@
 #include "stdafx.h"
-#include "Warper.h"
+#include "Warpper.h"
 #include <opencv.hpp>
 #include <QImage>
 #include <QPixmap>
 #include <QTimer>
 #include <QEventLoop>
+#include <QMetaType>
 
 using namespace cv;
 
-void Warper::run()
+Warpper::Warpper() :AlgorithmControler(this)
+{
+	qRegisterMetaType<State_E>("State_E");
+	/*aout << "====Algorithm Init [OK]====";*/
+}
+
+void Warpper::run()
 {
 	AlgorithmControler::Run();
 // 	cv::Mat img = _srcimg.clone();
@@ -35,7 +42,7 @@ void Warper::run()
 }
 
 
-bool Warper::ShowImg(const cv::InputArray img)
+bool Warpper::ShowImg(const cv::InputArray img)
 {
 	cv::Mat tmp = img.getMat();// .getMat();
 	CV_Assert(tmp.type() == CV_8UC4);
@@ -47,33 +54,41 @@ bool Warper::ShowImg(const cv::InputArray img)
 	return true;
 }
 
-bool Warper::ShowText(std::string text)
+bool Warpper::ShowText(std::string text)
 {
 	emit sig_ShowText(QString(text.c_str()));
 	return true;
 }
 
-bool Warper::ReportProgress(int progress)
+bool Warpper::ReportState(State_E state)
+{
+	emit sig_ReportState(state);
+	//emit sig_ReportState(State_Str[static_cast<int>(state)]);
+	return true;
+}
+
+bool Warpper::ReportProgress(int progress)
+{
+	emit sig_ReportProgress(progress);
+	return true;
+}
+
+bool Warpper::ReportError(std::string msg)
 {
 	throw std::logic_error("The method or operation is not implemented.");
 }
 
-bool Warper::ReportError(std::string msg)
+bool Warpper::SaveData(const cv::InputArray data)
 {
 	throw std::logic_error("The method or operation is not implemented.");
 }
 
-bool Warper::SaveData(const cv::InputArray data)
+bool Warpper::IsBusy() const
 {
 	throw std::logic_error("The method or operation is not implemented.");
 }
 
-bool Warper::IsBusy() const
-{
-	throw std::logic_error("The method or operation is not implemented.");
-}
-
-bool Warper::wait(int msec /*= 0*/) const
+bool Warpper::wait(int msec /*= 0*/) const
 {
 // 	QEventLoop eventloop;
 // 	QTimer::singleShot(msec, &eventloop, SLOT(quit())); //wait

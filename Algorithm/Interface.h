@@ -21,6 +21,51 @@
 class ALGORITHM_API Interface_Alg;
 class ALGORITHM_API Interface_GUI;
 
+//程序状态枚举量构造宏
+//	如STATE_E_CONSTRUCTOR(init)将展开为：
+//	init_pre,init_ing,init_end
+#define STATE_E_CONSTRUCTOR(name) name##_pre,name##_ing,name##_end
+/*enum class State_E
+ *	程序状态枚举量
+ *	标志程序的状态，每个分为前、中、后三个小阶段
+ *		前(pre)：开始尝试进入该状态，可能失败
+ *		中(ing)：成功进入状态
+ *		后(end)：该状态结束
+ */
+enum class State_E:unsigned int
+{
+	STATE_E_CONSTRUCTOR(init),
+	STATE_E_CONSTRUCTOR(reset),
+	STATE_E_CONSTRUCTOR(release),
+	STATE_E_CONSTRUCTOR(load),
+	STATE_E_CONSTRUCTOR(run),
+	STATE_E_CONSTRUCTOR(pause),
+	STATE_E_CONSTRUCTOR(stop),
+	STATE_E_CONSTRUCTOR(iter),
+	STATE_E_CONSTRUCTOR(complete),
+};
+//程序状态枚举量字符串构造宏
+//	如STATE_STR_CONSTRUCTOR("init")将展开为：
+//	"init_pre","init_ing","init_end"
+#define STATE_STR_CONSTRUCTOR(name) name"_pre",name"_ing",name"_end"
+/*const static char *State_Str[]
+*	程序状态枚举量字符串
+*	State_E对应的字符串，添加时注意次序对应
+*/
+const static char *State_Str[] =
+{
+	STATE_STR_CONSTRUCTOR("init"),
+	STATE_STR_CONSTRUCTOR("reset"),
+	STATE_STR_CONSTRUCTOR("release"),
+	STATE_STR_CONSTRUCTOR("load"),
+	STATE_STR_CONSTRUCTOR("run"),
+	STATE_STR_CONSTRUCTOR("pause"),
+	STATE_STR_CONSTRUCTOR("stop"),
+	STATE_STR_CONSTRUCTOR("iter"),
+	STATE_STR_CONSTRUCTOR("complete"),
+};
+#undef STATE_E_CONSTRUCTOR
+#undef STATE_STR_CONSTRUCTOR
 /*接口纯虚类
 	GUI向后台算法通信
 	算法继承并公有实现该接口，GUI实现相应的指针并调用方法。控制流单向，GUI->ALG
@@ -42,13 +87,12 @@ public:
 
 	virtual bool ReadRst(cv::OutputArray rst) = 0;//读取结果
 	virtual bool ReadParam()const = 0;//读取参数
-	virtual bool ReadState()const = 0;//读取当前状态
+	virtual State_E ReadState()const = 0;//读取当前状态
 
 	virtual bool Run() = 0;//运行（连续）
-	virtual bool RunOnce() = 0;//运行（单次）
 	virtual bool Pause(bool ispause) = 0;//暂停
 	virtual bool Stop() = 0;//停止（完成当前迭代之后）
-
+	
 	virtual bool IsInit() const = 0;//检查是否初始化完成
 	virtual bool IsRun() = 0;//检查是否正在运行
 	virtual bool IsWrite() = 0;//检查是否正在写入
@@ -64,6 +108,7 @@ class Interface_GUI
 public:
 	virtual bool ShowImg(const cv::InputArray img) = 0;//显示图片
 	virtual bool ShowText(std::string text) = 0;//输出文字
+	virtual bool ReportState(State_E state) = 0;//报告状态
 	virtual bool ReportProgress(int progress) = 0;//报告进度
 	virtual bool ReportError(std::string msg) = 0;//报告错误
 	virtual bool SaveData(const cv::InputArray data) = 0;//保存数据

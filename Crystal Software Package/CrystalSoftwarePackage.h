@@ -2,7 +2,7 @@
 #include <QtWidgets/QMainWindow>
 #include "ui_CrystalSoftwarePackage.h"
 
-#include "Warper.h"
+#include "Warpper.h"
 
 class CrystalSoftwarePackage : public QMainWindow
 {
@@ -13,15 +13,18 @@ public:
 	~CrystalSoftwarePackage();
 
 signals:
+	void sig();
 
 
 public slots:
 	void LoadFiles();
 	void RunAlg();
 	void PauseAlg(bool ispause);
+	void DisplayState(State_E);
+
 private:
 	Ui::CrystalSoftwarePackageClass ui;
-	Warper*alg = nullptr;
+	std::vector<Warpper*>algs{};
 
 
 };

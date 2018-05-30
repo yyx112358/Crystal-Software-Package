@@ -40,6 +40,8 @@ private:
 	typedef std::lock_guard<std::mutex>alglock_t;
 	cv::Mat _srcimg, _dstimg;
 	Interface_GUI*_gui;
+	State_E _sta = State_E::init_pre;
+#define CHANGE_STATE(sta) {_sta=sta;_gui->ReportState(sta);}
 
 /*线程安全注意：
  *	【重要】任何在运行中不能被调用的函数在开头都应调用LOCKRUN。
@@ -68,10 +70,9 @@ public:
 
 	virtual bool ReadRst(cv::OutputArray rst) override;
 	virtual bool ReadParam() const override;
-	virtual bool ReadState()const override;
+	virtual State_E ReadState()const override;
 
 	virtual bool Run() override;
-	virtual bool RunOnce() override;
 	virtual bool Pause(bool ispause) override;
 	virtual bool Stop() override;
 

@@ -16,6 +16,7 @@ Interface_Alg* Create_Interface_Alg(const Interface_GUI*gui)
 
 bool AlgorithmControler::Init(const Interface_GUI*gui)
 {
+	//CHANGE_STATE(State_E::init_pre);
 	if (IsInit() == true)
 		Release();
 	_gui = const_cast<Interface_GUI*>(gui);
@@ -33,35 +34,41 @@ bool AlgorithmControler::Init(const Interface_GUI*gui)
 
 bool AlgorithmControler::Reset()
 {
-// 	TRYRUN;
-// 	TRYWRITE;
-// 	_is_pause = false;
-// 	_is_stop = false;
-// 	_srcimg.release();
-// 	_dstimg.release();
+	CHANGE_STATE(State_E::reset_pre);
+	LOCKRUN;
+	LOCKWRITE;
+	CHANGE_STATE(State_E::reset_ing);
+	_is_pause = false;
+	_is_stop = false;
+	_srcimg.release();
+	_dstimg.release();
+	CHANGE_STATE(State_E::reset_end);
 	return true;
 }
 
 bool AlgorithmControler::Release()
 {
+	CHANGE_STATE(State_E::release_pre);
 	Stop();
 	while (IsRun() == true || IsWrite() == true);
-	LOCKRUN;
-	LOCKWRITE;
+	CHANGE_STATE(State_E::release_ing);
 	_is_init = false;
 	Reset();
+	CHANGE_STATE(State_E::release_end);
 	_gui = nullptr;
 	//_init_mutex.unlock();
 	return true;
 }
 bool AlgorithmControler::LoadSrc(cv::InputArray src)
 {
+	CHANGE_STATE(State_E::load_pre);
 	if (IsWrite() == true)
 		return false;
 	LOCKWRITE;
+	CHANGE_STATE(State_E::load_ing);
 	_srcimg = src.getMat().clone();
 	_gui->ShowText("OK");
-
+	CHANGE_STATE(State_E::load_end);
 	return true;
 }
 
@@ -94,22 +101,34 @@ bool AlgorithmControler::ReadParam()const
 	throw std::logic_error("The method or operation is not implemented.");
 }
 
-bool AlgorithmControler::ReadState()const
+State_E AlgorithmControler::ReadState()const
 {
-	throw std::logic_error("The method or operation is not implemented.");
+	return _sta;
 }
 
 //#include <windows.h>
 bool AlgorithmControler::Run()
 {
+	CHANGE_STATE(State_E::run_pre);
 	LOCKRUN;
 	Mat tmp = _srcimg.clone();
+	CHANGE_STATE(State_E::run_ing);
 	for (auto i = 0; i < 50; i++)
 	{
+		CHANGE_STATE(State_E::iter_pre);
 		if(_is_stop==true)//¼ì²éÊÇ·ñÍ£Ö¹
+		{
+			CHANGE_STATE(State_E::stop_end);
 			break;
-		while (_is_pause == true)//ÔÝÍ£Ê±×èÈû
-			_gui->wait(1);
+		}
+		if (_is_pause == true)
+		{
+			CHANGE_STATE(State_E::pause_ing);
+			while (_is_pause == true)//ÔÝÍ£Ê±×èÈû
+				_gui->wait(1);
+			CHANGE_STATE(State_E::pause_end);
+		}
+		CHANGE_STATE(State_E::iter_ing);
 
 // 		char str[20];
 // 		sprintf_s<sizeof(str)>(str, "%d", i);
@@ -118,30 +137,31 @@ bool AlgorithmControler::Run()
 		_gui->ShowImg(tmp);
 		//_gui->wait(40);
 		//Sleep(40);
-		int t = 0x4FFFFFF;
+		int t = 0x1FFFFFF;
 		while (t--);
 		tmp *= 1.02;
+		CHANGE_STATE(State_E::iter_end);
 	}
+	if(State_E::stop_end!=_sta)
+		CHANGE_STATE(State_E::run_end);
 	_is_stop = false;
 	_is_pause = false;
+	
 	return true;
-}
-
-bool AlgorithmControler::RunOnce()
-{
-	LOCKRUN;
-	throw std::logic_error("The method or operation is not implemented.");
 }
 
 bool AlgorithmControler::Pause(bool ispause)
 {
+	CHANGE_STATE(State_E::pause_pre);
 	_is_pause = ispause;
 	return true;
 }
 bool AlgorithmControler::Stop()
 {
+	CHANGE_STATE(State_E::stop_pre);
 	_is_stop = true;
 	_is_pause = false;
+	CHANGE_STATE(State_E::stop_ing);
 	return true;
 }
 
