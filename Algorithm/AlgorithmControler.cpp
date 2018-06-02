@@ -12,6 +12,11 @@ using namespace cv;
 bool AlgorithmControler::Init(const Interface_GUI*gui)
 {
 	//CHANGE_STATE(State_E::init_pre);
+	if (gui == nullptr) 
+	{
+		CV_Assert(gui != nullptr);
+		return false;
+	}
 	if (IsInit() == true)
 		Release();
 	_gui = const_cast<Interface_GUI*>(gui);

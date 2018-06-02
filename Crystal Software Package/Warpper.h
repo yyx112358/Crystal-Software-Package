@@ -75,7 +75,8 @@ private:
 	//virtual bool Interface_GUI::IsInit()const override { return true; }
 	virtual bool wait(int msec = 0) const override;
 
-	QStringList filenames;
+	QStringList _filenames;
+	//queue<string>_workflow;
 	AlgorithmControler*_alg=nullptr;
 };
 

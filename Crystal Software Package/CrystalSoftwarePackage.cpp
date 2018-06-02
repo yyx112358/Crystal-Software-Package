@@ -42,6 +42,12 @@ CrystalSoftwarePackage::CrystalSoftwarePackage(QWidget *parent)
 	connect(ui.pushButton_load_2, &QPushButton::clicked, this, &CrystalSoftwarePackage::LoadFiles);
 	connect(ui.pushButton_run_2, &QPushButton::clicked, this, &CrystalSoftwarePackage::RunAlg);
 	ui.pushButton_run_2->setEnabled(false);
+	qDebug() << sizeof(Mat) 
+		<< sizeof(std::vector<int>) 
+		<< sizeof(std::vector<Mat>)
+		<< sizeof(std::string)
+		<< sizeof(std::map<int, string>)
+		<< sizeof(std::map<string, Mat>); //96 32 32 40 24 24
 }
 
 CrystalSoftwarePackage::~CrystalSoftwarePackage()

@@ -60,4 +60,7 @@
       <Filter>Resource Files</Filter>
     </QtRcc>
   </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Crystal Software Package.rc" />
+  </ItemGroup>
 </Project>

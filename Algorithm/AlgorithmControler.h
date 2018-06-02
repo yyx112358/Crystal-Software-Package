@@ -10,9 +10,12 @@
 #include <mutex>
 #include <atomic>
 #include <sstream>
+#include <hash_map>
+#include "Algparam.h"
+#include "AlgOutstream.h"
 
 #ifdef _DEBUG
-//TODO 解决warning C4251问题 https://blog.csdn.net/shellching/article/details/7090742
+//TODO: 解决warning C4251问题 https://blog.csdn.net/shellching/article/details/7090742
 #pragma warning(disable: 4251)
 #endif // _DEBUG
 class ALGORITHM_API cv::Mat;
@@ -21,32 +24,20 @@ struct ALGORITHM_API atomic_bool;
 class ALGORITHM_API ostringstream;
 class ALGORITHM_API AlgOutstream;
 
-/*	自定义输出流
- *	用法类似于cout，但要求不能在AlgorithmControler的Init()函数中调用
-*/
-class ALGORITHM_API AlgOutstream
-{
-public:
-	AlgOutstream(const Interface_GUI*gui) { _gui = const_cast<Interface_GUI*>(gui); }
-	AlgOutstream(Interface_GUI*gui) :_gui(gui) {}
-	friend AlgOutstream& operator << (AlgOutstream&aos, std::string&str) { aos._gui->ShowText(str); return aos; }
-	friend AlgOutstream& operator << (AlgOutstream&aos, const char *in) { aos._gui->ShowText(in); return aos; }
-	template<typename Tp>
-	friend AlgOutstream& operator << (AlgOutstream&aos, Tp in) { aos.ss.str(""); aos.ss << in; aos._gui->ShowText(aos.ss.str()); return aos; }
-private:
-	Interface_GUI*_gui = nullptr;
-	std::ostringstream ss;
-};
+
 
 class ALGORITHM_API AlgorithmControler 
 	:public Interface_Alg 
 {
 protected:
 	cv::Mat _srcimg, _dstimg;
-	Interface_GUI*_gui;
+	Interface_GUI*_gui;//符合Interface_GUI的接口类实例指针
 	State_E _sta = State_E::init_pre;
 #define CHANGE_STATE(sta) {_sta=sta;_gui->ReportState(sta);}
 
+	//std::set<std::string>algonames;
+	std::hash_map<std::string, Algparam>params;
+	//std::map<std::string, std::map<std::string, Algparam>>params;
 /*线程安全注意：
  *	【重要】任何在运行中不能被调用的函数在开头都应调用LOCKRUN。
  *	【重要】任何对类成员变量和全局变量的写入操作之前应调用写保护。
