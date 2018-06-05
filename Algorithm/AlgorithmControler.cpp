@@ -34,41 +34,41 @@ bool AlgorithmControler::Init(const Interface_GUI*gui)
 
 bool AlgorithmControler::Reset()
 {
-	CHANGE_STATE(State_E::reset_pre);
+	ChangeState(State_E::reset_pre);
 	LOCKRUN;
 	LOCKWRITE;
-	CHANGE_STATE(State_E::reset_ing);
+	ChangeState(State_E::reset_ing);
 	_is_pause = false;
 	_is_stop = false;
 	_srcimg.release();
 	_dstimg.release();
-	CHANGE_STATE(State_E::reset_end);
+	ChangeState(State_E::reset_end);
 	return true;
 }
 
 bool AlgorithmControler::Release()
 {
-	CHANGE_STATE(State_E::release_pre);
+	ChangeState(State_E::release_pre);
 	Stop();
 	while (IsRun() == true || IsWrite() == true);
-	CHANGE_STATE(State_E::release_ing);
+	ChangeState(State_E::release_ing);
 	_is_init = false;
 	Reset();
-	CHANGE_STATE(State_E::release_end);
+	ChangeState(State_E::release_end);
 	_gui = nullptr;
 	//_init_mutex.unlock();
 	return true;
 }
 bool AlgorithmControler::LoadSrc(cv::InputArray src)
 {
-	CHANGE_STATE(State_E::load_pre);
+	ChangeState(State_E::load_pre);
 	if (IsWrite() == true)
 		return false;
 	LOCKWRITE;
-	CHANGE_STATE(State_E::load_ing);
+	ChangeState(State_E::load_ing);
 	_srcimg = src.getMat().clone();
 	_gui->ShowText("OK");
-	CHANGE_STATE(State_E::load_end);
+	ChangeState(State_E::load_end);
 	return true;
 }
 
@@ -80,7 +80,7 @@ bool AlgorithmControler::LoadSetting()
 	LOCKWRITE;
 	throw std::logic_error("The method or operation is not implemented.");
 }
-bool AlgorithmControler::LoadParam()
+bool AlgorithmControler::LoadParam(std::map<std::string, Algparam>&params)
 {
 	if (IsWrite() == true)
 		return false;
@@ -108,16 +108,16 @@ State_E AlgorithmControler::ReadState()const
 
 bool AlgorithmControler::Pause(bool ispause)
 {
-	CHANGE_STATE(State_E::pause_pre);
+	ChangeState(State_E::pause_pre);
 	_is_pause = ispause;
 	return true;
 }
 bool AlgorithmControler::Stop()
 {
-	CHANGE_STATE(State_E::stop_pre);
+	ChangeState(State_E::stop_pre);
 	_is_stop = true;
 	_is_pause = false;
-	CHANGE_STATE(State_E::stop_ing);
+	ChangeState(State_E::stop_ing);
 	return true;
 }
 

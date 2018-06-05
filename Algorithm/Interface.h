@@ -16,7 +16,9 @@
 #include "stdafx.h"
 #include <opencv2/core/mat.hpp>
 #include <string>
+#include <map>
 #include "dllmain.h"
+#include "Algparam.h"
 
 class ALGORITHM_API Interface_Alg;
 class ALGORITHM_API Interface_GUI;
@@ -83,7 +85,7 @@ public:
 
 	virtual bool LoadSrc(cv::InputArray src) = 0;//载入源图片
 	virtual bool LoadSetting() = 0;//载入设定
-	virtual bool LoadParam() = 0;//载入参数
+	virtual bool LoadParam(std::map<std::string, Algparam>&params) = 0;//载入参数
 
 	virtual bool ReadRst(cv::OutputArray rst) = 0;//读取结果
 	virtual bool ReadParam()const = 0;//读取参数

@@ -10,7 +10,7 @@
 #include <mutex>
 #include <atomic>
 #include <sstream>
-#include <hash_map>
+#include <unordered_map>
 #include "Algparam.h"
 #include "AlgOutstream.h"
 
@@ -33,10 +33,11 @@ protected:
 	cv::Mat _srcimg, _dstimg;
 	Interface_GUI*_gui;//符合Interface_GUI的接口类实例指针
 	State_E _sta = State_E::init_pre;
-#define CHANGE_STATE(sta) {_sta=sta;_gui->ReportState(sta);}
+
+    void ChangeState(State_E sta) {_sta=sta;_gui->ReportState(sta);}
 
 	//std::set<std::string>algonames;
-	std::hash_map<std::string, Algparam>params;
+	std::unordered_map<std::string, Algparam>params;
 	//std::map<std::string, std::map<std::string, Algparam>>params;
 /*线程安全注意：
  *	【重要】任何在运行中不能被调用的函数在开头都应调用LOCKRUN。
@@ -61,7 +62,7 @@ public:
 
 	virtual bool LoadSrc(cv::InputArray src) override;
 	virtual bool LoadSetting() override;
-	virtual bool LoadParam() override;
+	virtual bool LoadParam(std::map<std::string, Algparam>&params) override;
 
 	virtual bool ReadRst(cv::OutputArray rst) override;
 	virtual bool ReadParam() const override;
