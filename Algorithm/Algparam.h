@@ -137,10 +137,10 @@ public:
 	//================operator[]，获取特定内容================
 	int operator [](size_t);
 	//================类型转换函数================
-	inline int i()const { assert(type == E_TYPE::INT_T); return data.i; }
+	inline int i()const { assert(type == E_TYPE::INT_T || type == E_TYPE::DOUBLE_T); if (type == E_TYPE::INT_T)return data.i; else return data.d; }
 	inline std::vector<int>&vi()const { assert(type == E_TYPE::VINT_T);  return *data.vi; }
 
-	inline double d()const { assert(type == E_TYPE::DOUBLE_T); return data.d; }
+	inline double d()const { assert(type == E_TYPE::INT_T || type == E_TYPE::DOUBLE_T);if(type == E_TYPE::DOUBLE_T)return data.d;else return data.i; }
 	inline std::vector<double>&vd() const { assert(type == E_TYPE::VDOUBLE_T); return *data.vd; }
 
 	inline std::string& s()const { assert(type == E_TYPE::STRING_T); return *data.s; }

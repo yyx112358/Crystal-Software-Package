@@ -87,9 +87,7 @@ bool AlgorithmControler::LoadParam(ParamMap_t&params)
 	LOCKRUN;
 	LOCKWRITE;
 	for (auto param : params)
-	{
 		_params[param.first] = param.second;
-	}
 	return true;
 }
 
