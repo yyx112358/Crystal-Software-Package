@@ -7,6 +7,8 @@
 
 #include "targetver.h"
 
+#ifdef _ALGORITHM_STDAFX_CPP_
+
 #define WIN32_LEAN_AND_MEAN             // 从 Windows 头中排除极少使用的资料
 // Windows 头文件: 
 #include <windows.h>
@@ -15,9 +17,11 @@
 #include <memory>
 #include <map>
 #include <vector>
+#include <string>
+#include <mutex>
 
 #include <opencv2/core/mat.hpp>
-#ifdef Controler_h__
 #include <opencv.hpp>
-#endif // Controler
+
+#endif // _STDAFX_H_
 

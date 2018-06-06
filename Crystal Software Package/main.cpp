@@ -8,5 +8,14 @@ int main(int argc, char *argv[])
 	QApplication a(argc, argv);
 	CrystalSoftwarePackage w;
 	w.show();
-	return a.exec();
+
+	try
+	{
+		return a.exec();
+	}
+	catch (const std::exception&e)
+	{
+		qDebug() << e.what();
+	}
+	return -1;
 }

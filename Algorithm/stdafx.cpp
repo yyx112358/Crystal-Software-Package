@@ -2,7 +2,9 @@
 // Algorithm.pch 将作为预编译头
 // stdafx.obj 将包含预编译类型信息
 
+#define _ALGORITHM_STDAFX_CPP_
 #include "stdafx.h"
+#undef _ALGORITHM_STDAFX_CPP_
 
 // TODO: 在 STDAFX.H 中引用任何所需的附加头文件，
 //而不是在此文件中引用
