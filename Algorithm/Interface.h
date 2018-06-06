@@ -76,6 +76,8 @@ const static char *State_Str[] =
 		class GUI:{Interface_Alg*palg=new Alg_withinterface;}
 	带有后缀_Async的代表异步函数，不需要等待相关操作（如写入未完成、上一个被调用函数未结束、正在运行等）结束后就能使用
 */
+typedef std::map<std::string, Algparam> ParamMap_t;
+typedef std::pair<std::string, Algparam>ParamValue_t;
 class Interface_Alg
 {
 public:
@@ -85,7 +87,7 @@ public:
 
 	virtual bool LoadSrc(cv::InputArray src) = 0;//载入源图片
 	virtual bool LoadSetting() = 0;//载入设定
-	virtual bool LoadParam(std::map<std::string, Algparam>&params) = 0;//载入参数
+	virtual bool LoadParam(ParamMap_t&params) = 0;//载入参数
 
 	virtual bool ReadRst(cv::OutputArray rst) = 0;//读取结果
 	virtual bool ReadParam()const = 0;//读取参数

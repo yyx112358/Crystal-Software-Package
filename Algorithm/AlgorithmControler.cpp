@@ -80,13 +80,17 @@ bool AlgorithmControler::LoadSetting()
 	LOCKWRITE;
 	throw std::logic_error("The method or operation is not implemented.");
 }
-bool AlgorithmControler::LoadParam(std::map<std::string, Algparam>&params)
+bool AlgorithmControler::LoadParam(ParamMap_t&params)
 {
 	if (IsWrite() == true)
 		return false;
 	LOCKRUN;
 	LOCKWRITE;
-	throw std::logic_error("The method or operation is not implemented.");
+	for (auto param : params)
+	{
+		_params[param.first] = param.second;
+	}
+	return true;
 }
 
 bool AlgorithmControler::ReadRst(cv::OutputArray rst)

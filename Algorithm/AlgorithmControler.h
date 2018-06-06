@@ -35,9 +35,10 @@ protected:
 	State_E _sta = State_E::init_pre;
 
     void ChangeState(State_E sta) {_sta=sta;_gui->ReportState(sta);}
-
+//==========参数操作=========
 	//std::set<std::string>algonames;
-	std::unordered_map<std::string, Algparam>params;
+	std::unordered_map<std::string, Algparam>_params;
+
 	//std::map<std::string, std::map<std::string, Algparam>>params;
 /*线程安全注意：
  *	【重要】任何在运行中不能被调用的函数在开头都应调用LOCKRUN。
@@ -62,7 +63,7 @@ public:
 
 	virtual bool LoadSrc(cv::InputArray src) override;
 	virtual bool LoadSetting() override;
-	virtual bool LoadParam(std::map<std::string, Algparam>&params) override;
+	virtual bool LoadParam(ParamMap_t&params) override;
 
 	virtual bool ReadRst(cv::OutputArray rst) override;
 	virtual bool ReadParam() const override;

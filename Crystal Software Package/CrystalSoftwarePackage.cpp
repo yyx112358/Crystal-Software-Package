@@ -48,6 +48,10 @@ CrystalSoftwarePackage::CrystalSoftwarePackage(QWidget *parent)
 		<< sizeof(std::string)
 		<< sizeof(std::map<int, string>)
 		<< sizeof(std::map<string, Mat>); //96 32 32 40 24 24
+
+	ParamMap_t params;
+	params.insert(ParamValue_t("threshold", 50));
+	warpper->LoadParam(params);
 }
 
 CrystalSoftwarePackage::~CrystalSoftwarePackage()

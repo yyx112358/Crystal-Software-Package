@@ -42,7 +42,7 @@ public:
 
 	virtual bool LoadSrc(cv::InputArray src) { return _alg->LoadSrc(src); }
 	virtual bool LoadSetting() { return _alg->LoadSetting(); }
-	virtual bool LoadParam() { return _alg->LoadParam(); }
+	virtual bool LoadParam(ParamMap_t&params) { return _alg->LoadParam(params); }
 
 	virtual bool ReadRst(cv::OutputArray rst) { return _alg->ReadRst(rst); }
 	virtual bool ReadParam() const { return _alg->ReadParam(); }

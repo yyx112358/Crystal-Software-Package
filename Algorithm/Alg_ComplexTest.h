@@ -8,5 +8,8 @@ public:
 	virtual ~Alg_ComplexTest() {}
 
 	virtual bool Run() override;
+
+	virtual bool Init(const Interface_GUI*gui) override;
+
 };
 

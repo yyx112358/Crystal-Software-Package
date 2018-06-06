@@ -54,7 +54,7 @@ public:
     {
         if (CrystalSoftwarePackageClass->objectName().isEmpty())
             CrystalSoftwarePackageClass->setObjectName(QStringLiteral("CrystalSoftwarePackageClass"));
-        CrystalSoftwarePackageClass->resize(1683, 731);
+        CrystalSoftwarePackageClass->resize(1683, 721);
         centralWidget = new QWidget(CrystalSoftwarePackageClass);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         pushButton_run = new QPushButton(centralWidget);
@@ -112,7 +112,7 @@ public:
         CrystalSoftwarePackageClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(CrystalSoftwarePackageClass);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 1683, 41));
+        menuBar->setGeometry(QRect(0, 0, 1683, 26));
         CrystalSoftwarePackageClass->setMenuBar(menuBar);
         mainToolBar = new QToolBar(CrystalSoftwarePackageClass);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
