@@ -45,7 +45,7 @@ public:
 	virtual bool LoadParam(ParamMap_t&params) { return _alg->LoadParam(params); }
 
 	virtual bool ReadRst(cv::OutputArray rst) { return _alg->ReadRst(rst); }
-	virtual bool ReadParam() const { return _alg->ReadParam(); }
+	virtual bool ReadParam(ParamMap_t&params) const { return _alg->ReadParam(params); }
 	virtual State_E ReadState()const { return _alg->ReadState(); }
 
 	virtual void run() override { _alg->Run(); }

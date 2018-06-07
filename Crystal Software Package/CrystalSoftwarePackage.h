@@ -21,6 +21,7 @@ public slots:
 	void RunAlg();
 	void PauseAlg(bool ispause);
 	void DisplayState(State_E);
+	void SetThreshold(int value);
 
 private:
 	Ui::CrystalSoftwarePackageClass ui;

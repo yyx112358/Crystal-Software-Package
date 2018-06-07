@@ -97,10 +97,19 @@ bool AlgorithmControler::ReadRst(cv::OutputArray rst)
 	throw std::logic_error("The method or operation is not implemented.");
 	return !IsRun();//正在运行时返回false，说明当前结果不一定有效
 }
-
-bool AlgorithmControler::ReadParam()const
+//可通过读取对应元素的isinit()属性来获知是否存在该元素
+bool AlgorithmControler::ReadParam(ParamMap_t&params)const
 {
-	throw std::logic_error("The method or operation is not implemented.");
+	bool ishavefail = false;
+	for (auto &param : params)
+	{
+		auto it = _params.find(param.first);
+		if (it != _params.cend())
+			param.second = it->second;
+		else
+			ishavefail = false;
+	}
+	return ishavefail;
 }
 
 State_E AlgorithmControler::ReadState()const

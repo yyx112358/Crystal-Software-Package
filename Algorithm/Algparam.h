@@ -5,6 +5,7 @@
 #include "dllmain.h"
 #include <opencv2/core/mat.hpp>
 #include <unordered_map>
+#include <tuple>
 
 /*参数表
 * 根据需求简化得到的QVariant，可用同一个变量存储各种类型变量，并进行反射
@@ -23,47 +24,37 @@ public:
 		VDOUBLE_T = 'd' + 0x80,
 		STRING_T = 's',
 		VSTRING_T = 's' + 0x80,
-	}type;
-private:
-	bool _isinit = false;//初始化标志位
-public:
+	};
+
 	inline bool isinit()const { return _isinit; }
-	union
-	{
-		int i;
-		std::vector<int>*vi;
-		double d;
-		std::vector<double>*vd;
-		std::string*s;
-		std::vector<std::string>*vs;
-	}data;
+	inline E_TYPE type()const { return _type; }
 
 	//============构造函数和析构函数=============
-	Algparam() {}//= delete;
-	Algparam(const int in) { type = E_TYPE::INT_T; data.i = in; _isinit = true; }
-	Algparam(const std::vector<int> &in) { type = E_TYPE::VINT_T; *data.vi = in; _isinit = true; }
-	Algparam(const double in) { type = E_TYPE::DOUBLE_T; data.d = in; _isinit = true; }
-	Algparam(const std::vector<double> &in) { type = E_TYPE::VDOUBLE_T; *data.vd = in; _isinit = true; }
-	Algparam(const char *in) { type = E_TYPE::STRING_T; data.s = new std::string(in); _isinit = true; }
-	Algparam(const std::string &in) { type = E_TYPE::STRING_T; data.s = new std::string(in); _isinit = true; }
-	Algparam(const std::vector<std::string> &in) { type = E_TYPE::VSTRING_T; *data.vs = in; _isinit = true; }
+	Algparam():_isinit(false),_type(E_TYPE::VINT_T) { _data.vi = NULL; }//默认设定为未初始化，指向空指针
+	Algparam(const int in) { _type = E_TYPE::INT_T; _data.i = in; _isinit = true; }
+	Algparam(const std::vector<int> &in) { _type = E_TYPE::VINT_T; *_data.vi = in; _isinit = true; }
+	Algparam(const double in) { _type = E_TYPE::DOUBLE_T; _data.d = in; _isinit = true; }
+	Algparam(const std::vector<double> &in) { _type = E_TYPE::VDOUBLE_T; *_data.vd = in; _isinit = true; }
+	Algparam(const char *in) { _type = E_TYPE::STRING_T; _data.s = new std::string(in); _isinit = true; }
+	Algparam(const std::string &in) { _type = E_TYPE::STRING_T; _data.s = new std::string(in); _isinit = true; }
+	Algparam(const std::vector<std::string> &in) { _type = E_TYPE::VSTRING_T; *_data.vs = in; _isinit = true; }
 	void copyfrom(const Algparam&src)//全部深复制，开销较大但安全
 	{
 		if (_isinit == true)
 			release();
 		//_isinit = false;
-		type = src.type;
-		switch (src.type)
+		_type = src._type;
+		switch (src._type)
 		{
-		case E_TYPE::INT_T: data.i = src.i(); break;
-		case E_TYPE::VINT_T:data.vi = new std::vector<int>(src.vi()); break;
-		case E_TYPE::DOUBLE_T:data.d = src.d(); break;
-		case E_TYPE::VDOUBLE_T:data.vd = new std::vector<double>(src.vd());
-		case E_TYPE::STRING_T:data.s = new std::string(src.s()); break;//注意这里需要new，因为s()返回引用
-		case E_TYPE::VSTRING_T:data.vs = new std::vector<std::string>(src.vs());
+		case E_TYPE::INT_T: _data.i = src.i(); break;
+		case E_TYPE::VINT_T:_data.vi = new std::vector<int>(src.vi()); break;
+		case E_TYPE::DOUBLE_T:_data.d = src.d(); break;
+		case E_TYPE::VDOUBLE_T:_data.vd = new std::vector<double>(src.vd());
+		case E_TYPE::STRING_T:_data.s = new std::string(src.s()); break;//注意这里需要new，因为s()返回引用
+		case E_TYPE::VSTRING_T:_data.vs = new std::vector<std::string>(src.vs());
 		default:
 			assert(1);
-			throw "Not implement yet";
+			throw "Algparam:Unknown Type Copy";
 			break;
 		}
 		_isinit = true;
@@ -97,33 +88,33 @@ public:
 	void release()
 	{
 		_isinit = false;
-		if (data.vi != nullptr)
+		if (_data.vi != nullptr)
 		{
-			switch (type)
+			switch (_type)
 			{
 			case E_TYPE::INT_T:
 				break;
 			case Algparam::E_TYPE::VINT_T:
-				delete data.vi;
+				delete _data.vi;
 				break;
 			case  E_TYPE::DOUBLE_T:
 				break;
 			case Algparam::E_TYPE::VDOUBLE_T:
-				delete data.vd;
+				delete _data.vd;
 				break;
 			case Algparam::E_TYPE::STRING_T:
-				delete data.s;
+				delete _data.s;
 				break;
 			case Algparam::E_TYPE::VSTRING_T:
-				delete data.vs;
+				delete _data.vs;
 				break;
 			default:
 				assert(1);
-				throw "Not implement yet";
+				throw "Algparam:Unknown Type Released";
 				break;
 			}
 		}
-		data.vi = nullptr;
+		_data.vi = nullptr;
 	}
 
 	~Algparam()
@@ -137,23 +128,32 @@ public:
 	//================operator[]，获取特定内容================
 	int operator [](size_t);
 	//================类型转换函数================
-	inline int i()const { assert(type == E_TYPE::INT_T || type == E_TYPE::DOUBLE_T); if (type == E_TYPE::INT_T)return data.i; else return data.d; }
-	inline std::vector<int>&vi()const { assert(type == E_TYPE::VINT_T);  return *data.vi; }
+	inline int i()const { assert(_type == E_TYPE::INT_T || _type == E_TYPE::DOUBLE_T); if (_type == E_TYPE::INT_T)return _data.i; else return _data.d; }
+	inline std::vector<int>&vi()const { assert(_type == E_TYPE::VINT_T);  return *_data.vi; }
 
-	inline double d()const { assert(type == E_TYPE::INT_T || type == E_TYPE::DOUBLE_T);if(type == E_TYPE::DOUBLE_T)return data.d;else return data.i; }
-	inline std::vector<double>&vd() const { assert(type == E_TYPE::VDOUBLE_T); return *data.vd; }
+	inline double d()const { assert(_type == E_TYPE::INT_T || _type == E_TYPE::DOUBLE_T);if(_type == E_TYPE::DOUBLE_T)return _data.d;else return _data.i; }
+	inline std::vector<double>&vd() const { assert(_type == E_TYPE::VDOUBLE_T); return *_data.vd; }
 
-	inline std::string& s()const { assert(type == E_TYPE::STRING_T); return *data.s; }
-	inline std::vector<std::string>&vs() const { assert(type == E_TYPE::VSTRING_T); return *data.vs; }
-
-	//TODO:检查复制时是浅复制还是深复制，特别是Mat
-	operator std::string();
+	inline std::string& s()const { assert(_type == E_TYPE::STRING_T); return *_data.s; }
+	inline std::vector<std::string>&vs() const { assert(_type == E_TYPE::VSTRING_T); return *_data.vs; }
 
 	//================输出函数，输出类型名、内容================
 	std::string tostr() { return "Algparam"; }
 	const char*typestr(E_TYPE type);// { return names[type]; }
-									//	const static std::unordered_map<E_TYPE, const char *>_names;
-
+									
+	private:
+		bool _isinit = false;//初始化标志位
+		E_TYPE _type;
+		union
+		{
+			int i;
+			std::vector<int>*vi;
+			double d;
+			std::vector<double>*vd;
+			std::string*s;
+			std::vector<std::string>*vs;
+		}_data;
+	//	const static std::unordered_map<E_TYPE, const char *>_names;
 };
 // const std::unordered_map<Algparam::E_TYPE, const char *> Algparam::_names
 // {

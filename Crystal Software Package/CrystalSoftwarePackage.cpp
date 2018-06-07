@@ -52,6 +52,10 @@ CrystalSoftwarePackage::CrystalSoftwarePackage(QWidget *parent)
 	ParamMap_t params;
 	params.insert(ParamValue_t("threshold", 50));
 	warpper->LoadParam(params);
+	warpper->ReadParam(params);//读取threshold
+	if (params["threshold"].isinit() == true)
+		ui.horizontalSlider_3->setValue(params["threshold"].i());
+	connect(ui.horizontalSlider_3, &QSlider::valueChanged, this, &CrystalSoftwarePackage::SetThreshold);
 }
 
 CrystalSoftwarePackage::~CrystalSoftwarePackage()
@@ -126,4 +130,12 @@ void CrystalSoftwarePackage::DisplayState(State_E state)
 		ui.textBrowser->append(State_Str[static_cast<int>(state)]);
 	else if ((size_t)sender() == (size_t)algs[1])
 		ui.textBrowser_2->append(State_Str[static_cast<int>(state)]);
+}
+
+void CrystalSoftwarePackage::SetThreshold(int value)
+{
+	ParamMap_t tmp{ ParamValue_t("threshold",value) };
+	algs[1]->LoadParam(ParamMap_t{ ParamValue_t("threshold",value) });
+	if(algs[1]->IsRun()==false)
+		algs[1]->start();
 }

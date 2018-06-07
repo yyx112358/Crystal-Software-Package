@@ -66,7 +66,7 @@ public:
 	virtual bool LoadParam(ParamMap_t&params) override;
 
 	virtual bool ReadRst(cv::OutputArray rst) override;
-	virtual bool ReadParam() const override;
+	virtual bool ReadParam(ParamMap_t&params) const override;
 	virtual State_E ReadState()const override;
 
 	//virtual bool Run() override;

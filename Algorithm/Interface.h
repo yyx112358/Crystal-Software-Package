@@ -90,10 +90,10 @@ public:
 	virtual bool LoadParam(ParamMap_t&params) = 0;//载入参数
 
 	virtual bool ReadRst(cv::OutputArray rst) = 0;//读取结果
-	virtual bool ReadParam()const = 0;//读取参数
+	virtual bool ReadParam(ParamMap_t&params)const = 0;//读取参数
 	virtual State_E ReadState()const = 0;//读取当前状态
 
-	virtual bool Run() = 0;//运行（连续）
+	virtual bool Run() = 0;//运行
 	virtual bool Pause(bool ispause) = 0;//暂停
 	virtual bool Stop() = 0;//停止（完成当前迭代之后）
 	

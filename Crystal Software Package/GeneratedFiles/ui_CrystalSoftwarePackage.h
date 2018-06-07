@@ -104,6 +104,7 @@ public:
         horizontalSlider_3 = new QSlider(centralWidget);
         horizontalSlider_3->setObjectName(QStringLiteral("horizontalSlider_3"));
         horizontalSlider_3->setGeometry(QRect(1260, 550, 391, 22));
+        horizontalSlider_3->setMaximum(255);
         horizontalSlider_3->setOrientation(Qt::Horizontal);
         horizontalSlider_4 = new QSlider(centralWidget);
         horizontalSlider_4->setObjectName(QStringLiteral("horizontalSlider_4"));

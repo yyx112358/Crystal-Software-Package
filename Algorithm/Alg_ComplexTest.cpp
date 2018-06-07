@@ -7,6 +7,11 @@ using namespace cv;
 
 bool Alg_ComplexTest::Run()
 {
+	if (_srcimg.empty() == true)
+	{
+		ChangeState(State_E::run_end);
+		return false;
+	}
 	ChangeState(State_E::run_pre);
 	LOCKRUN;
 	//TODO

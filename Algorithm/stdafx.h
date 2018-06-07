@@ -19,6 +19,10 @@
 #include <vector>
 #include <string>
 #include <mutex>
+#include <atomic>
+#include <sstream>
+#include <unordered_map>
+#include <deque>
 
 #include <opencv2/core/mat.hpp>
 #include <opencv.hpp>
